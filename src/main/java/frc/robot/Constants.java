@@ -23,6 +23,10 @@ public final class Constants {
     public static int RIGHT_PRIMARY_MOTOR = 3;
     public static int LEFT_SECONDARY_MOTOR = 4;
     public static int RIGHT_SECONDARY_MOTOR = 5;
+
+    //CAN ID'S For the two Falcons on shooter
+    public static int PRIMARY_SHOOTER_MOTOR = 17;
+    public static int SECONDARY_SHOOTER_MOTOR = 19;
     
     //Turn Rate for Curvature Drive
     public static double MINIMUM_TURN_RATE = 0.15;
@@ -45,12 +49,15 @@ public final class Constants {
     public static int XBOX_MOVE = 1;
     public static int XBOX_TURN = 4;
 
-    //dead zone for joystick i'mput
+    //Dead zone for (Xbox) joystick i'mput
     public static double DEAD_ZONE = 0.15;
 
-    //
+    //Tan[x] Drive flight sticks
     public static final int LEFT_AXIS = 1;
-	public static final int RIGHT_AXIS = 1;
+    public static final int RIGHT_AXIS = 1;
+    
+    //Limelight angle located on Shooter
+    public static final int LIMELIGHT_ANGLE = 20;
 
     
 
