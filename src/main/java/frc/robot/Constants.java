@@ -59,6 +59,13 @@ public final class Constants {
     //Limelight angle located on Shooter
     public static final int LIMELIGHT_ANGLE = 20;
 
-    
+    //Constants for the Revolver
+    public static final int REVOLVER_MOTOR_ID = 8;
+    public static final double REVOLVER_CURRENT_LIMIT = 40.0;
+    public static final int REVOLVER_CALIBRATION_SWITCH_ID = 0;  // RoboRIO input id for calibration switch
+    public static final int REVOLVER_COLLECTION_POSITION = 0;
+    public static final int REVOLVER_SHOOTER_POSITION = REVOLVER_COLLECTION_POSITION + 2;
+    public static final double REVOLVER_GEAR_RATIO = 84.0 / 48.0;
 
+    public static final int NEO550_COUNTS_PER_REV = 42;
 }
