@@ -27,6 +27,9 @@ public final class Constants {
     //CAN ID'S For the two Falcons on shooter
     public static int PRIMARY_SHOOTER_MOTOR = 17;
     public static int SECONDARY_SHOOTER_MOTOR = 19;
+
+    //CAN ID For hood Neo 550
+    public static int HOOD_MOTOR = 8;
     
     //Turn Rate for Curvature Drive
     public static double MINIMUM_TURN_RATE = 0.15;

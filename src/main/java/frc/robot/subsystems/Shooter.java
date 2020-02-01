@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.Constants;
@@ -17,6 +19,8 @@ public class Shooter extends SubsystemBase {
  
   private TalonFX primaryShooterTalonFX;
   private TalonFX secondaryShooterTalonFX;
+
+  private CANSparkMax hoodMotor;
  
   /**
    * Creates a new Shooter.
