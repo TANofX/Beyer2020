@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 
 public class Limelight implements Subsystem {
 
@@ -160,6 +161,16 @@ public class Limelight implements Subsystem {
     public int tableValue() {
       return value;
     }
+  }
+
+  public double distanceToTarget() {
+
+    double targetViewAngle = Math.atan2(1,getTargetingValue("ty"));
+
+    double Distance = ((Constants.HEIGHT_OF_TARGET - Constants.LIMELIGHT_HEIGHT) / (Math.tan(Constants.LIMELIGHT_ANGLE - targetViewAngle)));
+
+    return Distance;
+
   }
 
   @Override

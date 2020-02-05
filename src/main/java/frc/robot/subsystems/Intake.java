@@ -7,13 +7,28 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  /**
-   * Creates a new Intake.
-   */
+
+TalonSRX intakeRollerMotor;
+CANSparkMax intakeOmniMotor;
+CANSparkMax intakeTransitMotor;
+
+
   public Intake() {
+
+    intakeRollerMotor = new TalonSRX(Constants.INTAKE_ROLLERS);
+    intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
+    intakeTransitMotor = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
+
 
   }
 
