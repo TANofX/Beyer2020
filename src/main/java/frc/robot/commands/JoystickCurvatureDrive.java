@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drives;
+import frc.robot.utils.JoystickUtils;
 
 public class JoystickCurvatureDrive extends CommandBase {
   private Joystick xbox;
@@ -36,14 +37,10 @@ public class JoystickCurvatureDrive extends CommandBase {
   public void execute() {
     double speed = 0.0;
     double turnRate = 0.0;
-    speed = xbox.getRawAxis(Constants.XBOX_MOVE) * -1.0;
-    turnRate = xbox.getRawAxis(Constants.XBOX_TURN);
-    if (Math.abs(speed) < Constants.DEAD_ZONE) {
-      speed = 0.0;
-    }
-    if (Math.abs(turnRate) < Constants.DEAD_ZONE) {
-      turnRate = 0.0;
-    }
+    speed = JoystickUtils.scaleDeadband(xbox.getRawAxis(Constants.XBOX_MOVE) * -1.0);
+    turnRate = JoystickUtils.scaleDeadband(xbox.getRawAxis(Constants.XBOX_TURN));
+    turnRate = turnRate/2.0;
+    
     driveBase.curvatureDrive(speed, turnRate);
   }
 

@@ -5,20 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.utils;
+import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+/**
+ * Add your docs here.
+ */
+public class JoystickUtils {
 
-public class ExampleSubsystem extends SubsystemBase {
-  /**
-   * Creates a new ExampleSubsystem.
-   */
-  public ExampleSubsystem() {
+ public static double scaleDeadband(double input){
 
-  }
+    if (Math.abs(input) < Constants.DEAD_ZONE) {
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+        return 0.0;
+
+    }
+    else return Math.signum(input) * (Math.abs(input) - Constants.DEAD_ZONE) / (1.0 - Constants.DEAD_ZONE);
+ }
+
 }

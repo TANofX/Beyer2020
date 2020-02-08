@@ -10,8 +10,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.JoystickCurvatureDrive;
+import frc.robot.commands.JoystickTankDrive;
 import frc.robot.subsystems.Drives;
 
 /**
@@ -22,8 +25,12 @@ import frc.robot.subsystems.Drives;
  */
 public class RobotContainer {
 
+  private final Joystick m_stick2 = new Joystick(Constants.STICK_2);
   private final Joystick m_stick = new Joystick(Constants.STICK);
   private final Joystick m_xbox = new Joystick(Constants.XBOX);
+
+  private final JoystickButton m_ReverseTrue = new JoystickButton(m_xbox, Constants.REVERSIT_TRUE);
+  private final JoystickButton m_ReverseFalse = new JoystickButton(m_xbox, Constants.REVERSEIT_FALSE);
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drives m_Drives = new Drives();
@@ -31,6 +38,7 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
+  private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -48,7 +56,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-   CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
+    m_ReverseTrue.whenPressed(() -> m_Drives.reverseIt(true));
+    m_ReverseFalse.whenPressed(() -> m_Drives.reverseIt(false));
+
+    CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
     
   }
 

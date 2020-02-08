@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.DriveMotor;
 
 
 public class Drives extends SubsystemBase {
@@ -24,10 +25,10 @@ public class Drives extends SubsystemBase {
    * Creates a new Drives.
    */
 
-  private TalonFX leftPrimaryTalonFX;
-  private TalonFX rightPrimaryTalonFX;
-  private TalonFX leftSecondaryTalonFX;
-  private TalonFX rightSecondaryTalonFX;
+  private DriveMotor leftPrimaryTalonFX;
+  private DriveMotor rightPrimaryTalonFX;
+  private DriveMotor leftSecondaryTalonFX;
+  private DriveMotor rightSecondaryTalonFX;
   //These are Falcon Motors - TalonFX 
 
   private DifferentialDrive differentialDrive;
@@ -38,10 +39,10 @@ public class Drives extends SubsystemBase {
   public Drives() {
 
     //Setting up the Drive base with Primary and Secondary Motors
-    leftPrimaryTalonFX = new TalonFX(Constants.LEFT_PRIMARY_MOTOR);
-    rightPrimaryTalonFX = new TalonFX(Constants.RIGHT_PRIMARY_MOTOR);
-    leftSecondaryTalonFX = new TalonFX(Constants.LEFT_SECONDARY_MOTOR);
-    rightSecondaryTalonFX = new TalonFX(Constants.RIGHT_SECONDARY_MOTOR);
+    leftPrimaryTalonFX = new DriveMotor(Constants.LEFT_PRIMARY_MOTOR);
+    rightPrimaryTalonFX = new DriveMotor(Constants.RIGHT_PRIMARY_MOTOR);
+    leftSecondaryTalonFX = new DriveMotor(Constants.LEFT_SECONDARY_MOTOR);
+    rightSecondaryTalonFX = new DriveMotor(Constants.RIGHT_SECONDARY_MOTOR);
 
     leftSecondaryTalonFX.follow(leftPrimaryTalonFX);
     rightSecondaryTalonFX.follow(rightPrimaryTalonFX);
@@ -51,8 +52,8 @@ public class Drives extends SubsystemBase {
     configureTalon(leftSecondaryTalonFX);
     configureTalon(rightSecondaryTalonFX);
 
-    differentialDrive = new DifferentialDrive((SpeedController)leftPrimaryTalonFX, (SpeedController)rightPrimaryTalonFX);
-    rDifferentialDrive = new DifferentialDrive((SpeedController)rightPrimaryTalonFX, (SpeedController)leftPrimaryTalonFX);
+    differentialDrive = new DifferentialDrive(leftPrimaryTalonFX, rightPrimaryTalonFX);
+    rDifferentialDrive = new DifferentialDrive(rightPrimaryTalonFX, leftPrimaryTalonFX);
     //This makes our starting configuration not flipped based on revereIt program
     reverseIt(false);
   }
@@ -128,15 +129,17 @@ public class Drives extends SubsystemBase {
     if (reversed) { 
 
       currentDifferentialDrive = rDifferentialDrive;
+      differentialDrive.setSafetyEnabled(false);
 
     }
 
     else {
 
       currentDifferentialDrive = differentialDrive;
+      rDifferentialDrive.setSafetyEnabled(false);
 
     }
-
+    currentDifferentialDrive.setSafetyEnabled(true);
   }
 
   public boolean isReversed() {

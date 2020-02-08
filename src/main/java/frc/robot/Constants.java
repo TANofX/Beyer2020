@@ -25,11 +25,11 @@ public final class Constants {
 
     //CAN ID For Intake Rollers (Talon AK)
     public static int INTAKE_ROLLERS = 11;
-
+    
 	//CAN ID'S For the Falcons (A,B,C,D) in the Drive Base
-    public static int LEFT_PRIMARY_MOTOR = 4;
-    public static int RIGHT_PRIMARY_MOTOR = 5;
-    public static int LEFT_SECONDARY_MOTOR = 6;
+    public static int LEFT_PRIMARY_MOTOR = 5;
+    public static int RIGHT_PRIMARY_MOTOR = 6;
+    public static int LEFT_SECONDARY_MOTOR = 4;
     public static int RIGHT_SECONDARY_MOTOR = 7;
 
      //CAN ID'S For the two Falcons on shooter (G,H)
@@ -90,7 +90,12 @@ public final class Constants {
 
     //Imports for controllers on Driverstation Laptop
     public static int STICK = 1;
+    public static int STICK_2 = 2;
     public static int XBOX = 0;
+
+    //imports for the two ReverseIt buttons
+    public static int REVERSIT_TRUE = 5;
+    public static int REVERSEIT_FALSE = 6;
 
     //Button Imputs for XBOX Controller
     public static int XBOX_MOVE = 1;
