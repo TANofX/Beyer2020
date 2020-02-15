@@ -8,13 +8,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utils.DriveMotor;
@@ -58,12 +62,26 @@ public class Drives extends SubsystemBase {
     reverseIt(false);
   }
 
-  private void configureTalon(TalonFX talon) {
+  private void configureTalon(TalonSRX talon) {
 
     //neutral Mode means Coasting instead of braking after ... 
     talon.setNeutralMode(NeutralMode.Coast);
     talon.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.THRESHOLD_CURRENT, Constants.THRESHOLD_TIMEOUT));
 
+    talon.selectProfileSlot(0,0);
+
+    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
+    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
+
+    talon.configMotionCruiseVelocity(20600, 0);
+    talon.configMotionAcceleration(5000, 0);
+    talon.config_kF(0, 0.0496, 0);
+    talon.config_kP(0, 0.05, 0);
+    talon.config_kI(0, 0, 0);
+
+    talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+
+    talon.setSelectedSensorPosition(0);
   }
 
 
@@ -80,12 +98,20 @@ public class Drives extends SubsystemBase {
   //Conversion so we can actually do Automonous Code
   private double inchesToEncoderCounts(double inches) {
 
-    double returnValue = (inches / Constants.DRIVE_WHEEL_CIRCUMFERENCE) * Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_MOTOR_TICKS_PER_REV;
+    double returnValue = (inches / Constants.DRIVE_WHEEL_CIRCUMFERENCE) * Constants.DRIVE_GEAR_RATIO * Constants.FALCON_COUNTS_PER_REV;
     return returnValue;
 
   }
 
+  public void moveXInches(double inches) {
 
+    double requiredCounts = inchesToEncoderCounts(inches);
+    double rightTargetCounts = rightPrimaryTalonFX.getSelectedSensorPosition() + requiredCounts;
+    double leftTargetCounts = leftPrimaryTalonFX.getSelectedSensorPosition() - requiredCounts;
+    rightPrimaryTalonFX.set(ControlMode.MotionMagic, rightTargetCounts);
+    leftPrimaryTalonFX.set(ControlMode.MotionMagic, leftTargetCounts);
+
+  }
 
   public double getLeftPrimarySpeed() {
 
@@ -150,7 +176,7 @@ public class Drives extends SubsystemBase {
 
   public void stop() {
 
-    currentDifferentialDrive.stopMotor();
+  currentDifferentialDrive.stopMotor();
     leftPrimaryTalonFX.set(ControlMode.PercentOutput, 0);
     rightPrimaryTalonFX.set(ControlMode.PercentOutput, 0);
  
@@ -159,7 +185,16 @@ public class Drives extends SubsystemBase {
   @Override
   public void periodic() {
 
+    SmartDashboard.putNumber("LeftPrimaryMotorRpm", leftPrimaryTalonFX.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("RightPrimaryMotorRpm", rightPrimaryTalonFX.getSelectedSensorVelocity(0));
 
+    SmartDashboard.putNumber("targetError", rightPrimaryTalonFX.getClosedLoopError());
+    SmartDashboard.putNumber("rightMotorPosition", rightPrimaryTalonFX.getSelectedSensorPosition(0));
+
+    SmartDashboard.putNumber("LeftPrimaryMotorVoltage", leftPrimaryTalonFX.getMotorOutputVoltage());
+    SmartDashboard.putNumber("LeftSecondaryMotorVoltage", leftSecondaryTalonFX.getMotorOutputVoltage());
+    SmartDashboard.putNumber("RightPrimaryMotorVoltage", rightPrimaryTalonFX.getMotorOutputVoltage());
+    SmartDashboard.putNumber("RigtSecondaryMotorVoltage", rightSecondaryTalonFX.getMotorOutputVoltage());
 
     // This method will be called once per scheduler run
   }

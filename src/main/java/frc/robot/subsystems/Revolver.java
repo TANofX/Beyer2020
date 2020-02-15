@@ -7,40 +7,79 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.SpinRevolver;
 
 public class Revolver extends SubsystemBase {
+  private CANPIDController revolverController; 
   private CANSparkMax revolverMotor;
   private CANEncoder revolverEncoder;
+  private AnalogInput fuelCellSensor;
 
-  private static final int TICKS_PER_SLOT = Math.floorDiv((int)Constants.REVOLVER_GEAR_RATIO * Constants.NEO550_COUNTS_PER_REV, 5);
+  private double targetPosition;
+
+  private static final double TICKS_PER_REV = (Constants.REVOLVER_GEAR_RATIO * Constants.NEO550_COUNTS_PER_REV);
+  private static final double TICKS_PER_SLOT = (TICKS_PER_REV / 5.0);
 
   /**
    * Creates a new Revolver.
    */
   public Revolver() {
     revolverMotor = new CANSparkMax(Constants.REVOLVER_MOTOR_ID, MotorType.kBrushless);
-    revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, 42);
+    revolverController = revolverMotor.getPIDController();
+    revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, Constants.NEO550_COUNTS_PER_REV);
+
+    fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
+  }
+
+  public void SpinRevolver() {
+
+    revolverMotor.set(0.5);
+
+  }
+
+  private int currentRevolution() {
+
+    return (int) (revolverEncoder.getPosition() / TICKS_PER_REV);
+
   }
 
   public int currentPosition() {
-    return Math.floorMod((int)revolverEncoder.getPosition(), TICKS_PER_SLOT);
+    return (int) ((revolverEncoder.getPosition() % TICKS_PER_REV) / TICKS_PER_SLOT);
   }
 
   public void rotateToPosition(int position) {
-    int ticksFromZero = position * TICKS_PER_SLOT;
 
+    if(position < 0  || position > 4) {
+      throw new ArrayIndexOutOfBoundsException();
+    }
+
+    int Revolution = currentRevolution();
+    if(position < currentPosition()) Revolution++;
+
+    double ticksFromZeroRevolution = Math.round(position * TICKS_PER_SLOT);
+    targetPosition = Revolution * TICKS_PER_REV + ticksFromZeroRevolution;
+    revolverController.setReference(targetPosition, ControlType.kSmartMotion, 0);
     
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Fuel Cell Sensor", fuelCellSensor.getVoltage());
+
   }
 }

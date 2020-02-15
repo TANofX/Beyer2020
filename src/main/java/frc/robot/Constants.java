@@ -42,6 +42,19 @@ public final class Constants {
      //CAN Shooter Transit  neo 550
      public static int SHOOTER_TRANSIT = 12;
 
+     //Can id for the two Climber falcons (Talons E and F)
+     public static int CLIMBER_PRIMARY = 8;
+     public static int CLIMBER_SECONDARY = 9;
+
+     //Can id for pcm
+    public static int PCM = 15;
+
+     //pcm slot of the solenoid on the climber
+    public static int CLIMBER_Solenoid = 1 ;
+
+     //climber wheel(falcon i)
+   
+
      //speed for the shooter Transit motor
      public static double SHOOTER_TRANSIT_SPEED = 0.5;
 
@@ -59,7 +72,7 @@ public final class Constants {
     //Drive Base Stuff for InchesToTicksOnMotor
     public static double DRIVE_GEAR_RATIO = 12.7272727;
     public static double DRIVE_WHEEL_CIRCUMFERENCE = 6.125 * Math.PI;
-    public static int DRIVE_MOTOR_TICKS_PER_REV = 2048;
+    public static int FALCON_COUNTS_PER_REV = 2048;
        
     //Constants for the Revolver
     public static final int REVOLVER_MOTOR_ID = 8;
@@ -68,7 +81,13 @@ public final class Constants {
     // RoboRIO input id for calibration switch
     public static final int REVOLVER_COLLECTION_POSITION = 0;
     public static final int REVOLVER_SHOOTER_POSITION = REVOLVER_COLLECTION_POSITION + 2;
-    public static final double REVOLVER_GEAR_RATIO = 84.0 / 48.0;
+
+
+    //Button import for spinning the revolver
+    public static final int SPIN_REVOLVER = 4;
+
+    //Button import for spinning the shooter
+    public static final int SPIN_SHOOTER_SPIN = 3;
     
     public static final int NEO550_COUNTS_PER_REV = 42;
 
@@ -108,5 +127,19 @@ public final class Constants {
     public static final int LEFT_AXIS = 1;
     public static final int RIGHT_AXIS = 1;
     
-}
+    //Climber Motor Information
+    public static final double CLIMBER_MOTOR_GEAR_RATIO = 33.4;
+    public static double CLIMBER_WHEEL_CIRCUMFERENCE = 3.5325;
+    public static final double CLIMER_THRESHOLD_CURRENT = 120;
+    public static final double CLIMBER_THRESHOLD_TIMEOUT = 0.5;
+
+    //Revolver Motor Information
+    public static final double REVOLVER_GEAR_RATIO = (84.0 / 48.0)*100.0;
+    public static final int REVOLVER_WHEEL_CIRCUMFERENCE = 1;
+
+    //revolver analog chanal
+    public static final int FUEL_CELL_SENSOR_PORT = 0;
+
+
     
+}

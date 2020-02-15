@@ -8,8 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANEncoder;
@@ -24,6 +28,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
  
+  private static final CANSparkMax SpinShooterSpin = null;
   private TalonFX primaryShooterTalonFX;
   private TalonFX secondaryShooterTalonFX;
 
@@ -57,12 +62,29 @@ public class Shooter extends SubsystemBase {
 
     configureTalon(primaryShooterTalonFX);
     configureTalon(secondaryShooterTalonFX);
-
+    hoodController.setP(0.0125, 0);
+    hoodController.setI(0.00125, 0);
   }
 
   private void configureTalon(TalonFX talon) {
 
     talon.setNeutralMode(NeutralMode.Coast);
+    talon.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.THRESHOLD_CURRENT, Constants.THRESHOLD_TIMEOUT));
+
+    talon.selectProfileSlot(0,0);
+
+    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
+    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
+
+    talon.configMotionCruiseVelocity(20600, 0);
+    talon.configMotionAcceleration(5000, 0);
+    talon.config_kF(0, 0.0496, 0);
+    talon.config_kP(0, 0.05, 0);
+    talon.config_kI(0, 0, 0);
+
+    talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+
+    talon.setSelectedSensorPosition(0);
 
   }
 
@@ -72,6 +94,13 @@ public class Shooter extends SubsystemBase {
     return returnValue;
 
   }
+
+  public static void SpinShooterSpin() {
+
+    SpinShooterSpin.set(0.5);
+
+  }
+
 
   public boolean moveHood(double angle) {
     // protecting the shooter from us just destroying it
@@ -155,6 +184,10 @@ public boolean atSpeed() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Shooter Speed", getprimaryShooterSpeed()); 
+    SmartDashboard.putNumber("Target Shooter Speed", targetShooterSpeed.getMotorSpeed());
+
   }
 }
 

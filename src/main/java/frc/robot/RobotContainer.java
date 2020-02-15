@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
 import frc.robot.subsystems.Drives;
+import frc.robot.subsystems.Revolver;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,6 +33,11 @@ public class RobotContainer {
 
   private final JoystickButton m_ReverseTrue = new JoystickButton(m_xbox, Constants.REVERSIT_TRUE);
   private final JoystickButton m_ReverseFalse = new JoystickButton(m_xbox, Constants.REVERSEIT_FALSE);
+
+  private final JoystickButton driveTestButton = new JoystickButton(m_xbox, 8);
+
+  private final JoystickButton spinRevolver = new JoystickButton(m_xbox, Constants.SPIN_REVOLVER);
+  private final JoystickButton spinShooterSpin = new JoystickButton(m_xbox, Constants.SPIN_SHOOTER_SPIN);
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drives m_Drives = new Drives();
@@ -46,6 +53,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+  
   }
 
   /**
@@ -59,10 +67,16 @@ public class RobotContainer {
     m_ReverseTrue.whenPressed(() -> m_Drives.reverseIt(true));
     m_ReverseFalse.whenPressed(() -> m_Drives.reverseIt(false));
 
+    driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
+
+    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
+    spinShooterSpin.whenPressed(()-> Shooter.SpinShooterSpin());
+
+
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
+
     
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -72,3 +86,4 @@ public class RobotContainer {
  // public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
   }
+

@@ -28,7 +28,7 @@ CANSparkMax intakeTransitMotor;
     intakeRollerMotor = new TalonSRX(Constants.INTAKE_ROLLERS);
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
     intakeTransitMotor = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
-
+    
     configureTalon(intakeRollerMotor);
 
   }
