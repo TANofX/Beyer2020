@@ -16,6 +16,7 @@ import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,6 +27,7 @@ public class Revolver extends SubsystemBase {
   private CANSparkMax revolverMotor;
   private CANEncoder revolverEncoder;
   private AnalogInput fuelCellSensor;
+  private DigitalInput revolverPositionSensor;
 
   private double targetPosition;
 
@@ -41,6 +43,7 @@ public class Revolver extends SubsystemBase {
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, Constants.NEO550_COUNTS_PER_REV);
 
     fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
+    revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
   }
 
   public void SpinRevolver() {
@@ -72,6 +75,20 @@ public class Revolver extends SubsystemBase {
     targetPosition = Revolution * TICKS_PER_REV + ticksFromZeroRevolution;
     revolverController.setReference(targetPosition, ControlType.kSmartMotion, 0);
     
+
+  }
+
+  public boolean calibrateRevolver() {
+
+      if (revolverPositionSensor.get()){
+
+        revolverMotor.stopMotor();
+        revolverEncoder.setPosition(0.0);
+        return true;
+
+      }
+    
+      return false;
 
   }
 

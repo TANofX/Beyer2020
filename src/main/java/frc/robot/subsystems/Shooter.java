@@ -101,6 +101,13 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  public double getAngle() {
+
+  double position = hoodEncoder.getPosition();
+  return (position * 360.0) / (Constants.NEO550_COUNTS_PER_REV * Constants.HOOD_MOTOR_GEAR_RATIO);
+
+  }
+
 
   public boolean moveHood(double angle) {
     // protecting the shooter from us just destroying it
@@ -116,6 +123,24 @@ public class Shooter extends SubsystemBase {
     hoodController.setReference(targetHoodPosition, ControlType.kSmartMotion);
 
     return true;
+  }
+
+  public void hoodUp() {
+
+    hoodMotor.set(0.5);
+
+  }
+
+  public void hoodDown() {
+
+    hoodMotor.set(-0.5);
+    
+  }
+
+  public void hoodStop() {
+
+    hoodMotor.set(0.0);
+
   }
 
   public void lowerHood() {
@@ -187,7 +212,7 @@ public boolean atSpeed() {
 
     SmartDashboard.putNumber("Shooter Speed", getprimaryShooterSpeed()); 
     SmartDashboard.putNumber("Target Shooter Speed", targetShooterSpeed.getMotorSpeed());
-
+    SmartDashboard.putNumber("Hood Angle", getAngle());
   }
 }
 

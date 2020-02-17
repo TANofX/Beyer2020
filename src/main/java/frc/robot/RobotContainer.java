@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
+import frc.robot.commands.MoveHood;
 import frc.robot.subsystems.Drives;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSpeeds;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -36,8 +38,15 @@ public class RobotContainer {
 
   private final JoystickButton driveTestButton = new JoystickButton(m_xbox, 8);
 
-  private final JoystickButton spinRevolver = new JoystickButton(m_xbox, Constants.SPIN_REVOLVER);
-  private final JoystickButton spinShooterSpin = new JoystickButton(m_xbox, Constants.SPIN_SHOOTER_SPIN);
+  private final JoystickButton spinRevolver = new JoystickButton(m_stick, Constants.SPIN_REVOLVER);
+  private final JoystickButton spinHigh = new JoystickButton(m_stick, Constants.HIGH_SHOOTER_SPEED);
+  private final JoystickButton spinMedium = new JoystickButton(m_stick, Constants.MEDIUM_SHOOTER_SPEED);
+  private final JoystickButton spinLow = new JoystickButton(m_stick, Constants.LOW_SHOOTER_SPEED);
+  private final JoystickButton spinStop = new JoystickButton(m_stick, Constants.STOP_SHOOTER);
+  private final JoystickButton hoodUp = new JoystickButton(m_stick, Constants.HOOD_UP);
+  private final JoystickButton hoodDown = new JoystickButton(m_stick, Constants.HOOD_DOWN);
+
+
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drives m_Drives = new Drives();
@@ -46,6 +55,8 @@ public class RobotContainer {
 
   private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
   private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
+
+  private final Shooter m_Shooter = new Shooter();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -70,7 +81,13 @@ public class RobotContainer {
     driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
 
     //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
-    spinShooterSpin.whenPressed(()-> Shooter.SpinShooterSpin());
+    spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
+    spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
+    spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
+    spinStop.whenPressed(()-> m_Shooter.stop());
+
+    hoodUp.whileHeld(new MoveHood(m_Shooter, true));
+    hoodDown.whileHeld(new MoveHood(m_Shooter, false));
 
 
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);

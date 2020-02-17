@@ -53,6 +53,13 @@ public final class Constants {
     public static int CLIMBER_Solenoid = 1 ;
 
      //climber wheel(falcon i)
+
+     //Intake Motor Speeds
+    public static int INTAKE_OMNI_MOTOR_SPEED = 1;
+    public static int INTAKE_TRANSIT1_SPEED = 1;
+
+     //pcm slot of the solenoid on the Intake
+    public static int INTAKE_solenoid = 0;
    
 
      //speed for the shooter Transit motor
@@ -112,13 +119,33 @@ public final class Constants {
     public static int STICK_2 = 2;
     public static int XBOX = 0;
 
-    //imports for the two ReverseIt buttons
+    //Button Inputs for XBOX Controller
+    public static int XBOX_MOVE = 1;  //axis
+    public static int XBOX_TURN = 4;  //axis
     public static int REVERSIT_TRUE = 5;
     public static int REVERSEIT_FALSE = 6;
+    public static int UP_INTAKE = 4;
+    public static int DOWN_INTAKE = 3;
+    public static int EXTAKE = 2;
+    public static int RUN_INTAKE = 3; //Trigger
+    public static int SLOW_DOWN = 2;  //Trigger
+    public static int CANCEL = 7;
 
-    //Button Imputs for XBOX Controller
-    public static int XBOX_MOVE = 1;
-    public static int XBOX_TURN = 4;
+    //Button Inputs for Flight Stick Controller
+    public static int SHOOT = 1;
+    public static int LINE_UP = 2;
+    public static int TURN_ON_LIMELIGHT = 5;
+    public static int RAISE_LOWER_CLIMBER = 1; //axis
+    public static int ON_OFF_CLIMBER = 3;  //slider
+
+    public static int HIGH_SHOOTER_SPEED = 7;
+    public static int MEDIUM_SHOOTER_SPEED = 9;
+    public static int LOW_SHOOTER_SPEED = 11;
+
+    public static int STOP_SHOOTER = 12;
+
+    public static int HOOD_UP = 8;
+    public static int HOOD_DOWN = 10;
 
     //Dead zone for (Xbox) joystick i'mput
     public static double DEAD_ZONE = 0.15;
@@ -139,6 +166,7 @@ public final class Constants {
 
     //revolver analog chanal
     public static final int FUEL_CELL_SENSOR_PORT = 0;
+    public static final int REVOLVER_POSITION_SENSOR = 1;
 
 
     
