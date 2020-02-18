@@ -15,13 +15,15 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.EncoderType;
 import com.revrobotics.SparkMax;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
@@ -29,8 +31,8 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
  
   private static final CANSparkMax SpinShooterSpin = null;
-  private TalonFX primaryShooterTalonFX;
-  private TalonFX secondaryShooterTalonFX;
+  private TalonSRX primaryShooterTalonFX;
+  private TalonSRX secondaryShooterTalonFX;
 
   private CANSparkMax hoodMotor;
 
@@ -41,32 +43,39 @@ public class Shooter extends SubsystemBase {
 
   private double targetHoodPosition = 0.0;
 
-  private ShooterSpeeds targetShooterSpeed;
+  private ShooterSpeeds targetShooterSpeed = ShooterSpeeds.OFF;
  
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
 
-    primaryShooterTalonFX = new TalonFX(Constants.PRIMARY_SHOOTER_MOTOR);
-    secondaryShooterTalonFX = new TalonFX(Constants.SECONDARY_SHOOTER_MOTOR);
+    primaryShooterTalonFX = new TalonSRX(Constants.PRIMARY_SHOOTER_MOTOR);
+    secondaryShooterTalonFX = new TalonSRX(Constants.SECONDARY_SHOOTER_MOTOR);
+
+
+
 
     hoodMotor = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
     hoodController = hoodMotor.getPIDController();
     hoodEncoder = hoodMotor.getEncoder(EncoderType.kHallSensor, Constants.NEO550_COUNTS_PER_REV);
+    hoodMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
+    hoodMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
 
     transitMotor = new CANSparkMax(Constants.SHOOTER_TRANSIT, MotorType.kBrushless);
     
-
-    secondaryShooterTalonFX.follow(primaryShooterTalonFX);
 
     configureTalon(primaryShooterTalonFX);
     configureTalon(secondaryShooterTalonFX);
     hoodController.setP(0.0125, 0);
     hoodController.setI(0.00125, 0);
+
+    
+
+    secondaryShooterTalonFX.follow(primaryShooterTalonFX);
   }
 
-  private void configureTalon(TalonFX talon) {
+  private void configureTalon(TalonSRX talon) {
 
     talon.setNeutralMode(NeutralMode.Coast);
     talon.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.THRESHOLD_CURRENT, Constants.THRESHOLD_TIMEOUT));
@@ -95,9 +104,9 @@ public class Shooter extends SubsystemBase {
 
   }
 
-  public static void SpinShooterSpin() {
+  public void SpinShooterSpin() {
 
-    SpinShooterSpin.set(0.5);
+    primaryShooterTalonFX.set(ControlMode.PercentOutput, 1.0);
 
   }
 

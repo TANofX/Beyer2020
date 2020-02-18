@@ -168,6 +168,8 @@ public final class Constants {
     public static final int FUEL_CELL_SENSOR_PORT = 0;
     public static final int REVOLVER_POSITION_SENSOR = 1;
 
+	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.25;
+
 
     
 }

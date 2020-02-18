@@ -60,17 +60,26 @@ Solenoid  collectorArm;
 
   private void spinRoller() {
 
-    boolean isCollectorArmDown = collectorArm.get();
-
-    if(isCollectorArmDown = true) intakeRollerMotor.set(ControlMode.PercentOutput, 0);
+    if(collectorArm.get() == true) intakeRollerMotor.set(ControlMode.PercentOutput, 0.25);
 
   }
 
   private void activateIntake() {
 
-    if(collectorArm.get() = true) intakeRollerMotor.set(ControlMode.PercentOutput, 0);
+    if(collectorArm.get() == true) { 
+    intakeRollerMotor.set(ControlMode.PercentOutput, Constants.INTAKE_ROLLER_MOTOR_SPEED);
     intakeOmniMotor.set(Constants.INTAKE_OMNI_MOTOR_SPEED);
     intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED);
+    }
+
+  }
+
+  private void activateExtake() {
+
+    if(collectorArm.get() == true) 
+    intakeRollerMotor.set(ControlMode.PercentOutput, Constants.INTAKE_ROLLER_MOTOR_SPEED * -1.0);
+    intakeOmniMotor.set(Constants.INTAKE_OMNI_MOTOR_SPEED * -1.0);
+    intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED * -1.0);
 
   }
 

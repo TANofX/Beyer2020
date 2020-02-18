@@ -29,7 +29,6 @@ public class CalibrateRevolver extends CommandBase {
   @Override
   public void initialize() {
 
-    revolver.SpinRevolver();
 
   }
 

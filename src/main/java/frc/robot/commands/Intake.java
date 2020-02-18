@@ -7,33 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Revolver;
 
-public class SpinRevolver extends CommandBase {
-  Revolver revolver;
-  Joystick xbox;
-
+public class Intake extends CommandBase {
   /**
-   * Creates a new SpinRevolver.
+   * Creates a new Intake.
    */
-  public SpinRevolver(Joystick xboxController, Revolver revolverCommand) {
-    
-xbox = xboxController;
-revolver = revolverCommand;
-    
-    // Use addRequirements() hereto declare subsystem dependencies.
-  
+  public Intake() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

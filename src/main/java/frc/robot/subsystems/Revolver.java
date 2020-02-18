@@ -46,7 +46,7 @@ public class Revolver extends SubsystemBase {
     revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
   }
 
-  public void SpinRevolver() {
+  public void spinRevolver() {
 
     revolverMotor.set(0.5);
 

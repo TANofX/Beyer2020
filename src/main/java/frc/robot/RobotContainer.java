@@ -38,13 +38,15 @@ public class RobotContainer {
 
   private final JoystickButton driveTestButton = new JoystickButton(m_xbox, 8);
 
-  private final JoystickButton spinRevolver = new JoystickButton(m_stick, Constants.SPIN_REVOLVER);
+  //private final JoystickButton spinRevolver = new JoystickButton(m_stick, Constants.SPIN_REVOLVER);
   private final JoystickButton spinHigh = new JoystickButton(m_stick, Constants.HIGH_SHOOTER_SPEED);
   private final JoystickButton spinMedium = new JoystickButton(m_stick, Constants.MEDIUM_SHOOTER_SPEED);
   private final JoystickButton spinLow = new JoystickButton(m_stick, Constants.LOW_SHOOTER_SPEED);
   private final JoystickButton spinStop = new JoystickButton(m_stick, Constants.STOP_SHOOTER);
   private final JoystickButton hoodUp = new JoystickButton(m_stick, Constants.HOOD_UP);
   private final JoystickButton hoodDown = new JoystickButton(m_stick, Constants.HOOD_DOWN);
+  private final JoystickButton spinShooter = new JoystickButton(m_stick, 6);
+  private final JoystickButton spinRevolver = new JoystickButton(m_stick, 7);
 
 
   // The robot's subsystems and commands are defined here...
@@ -58,6 +60,7 @@ public class RobotContainer {
 
   private final Shooter m_Shooter = new Shooter();
 
+  private final Revolver m_Revolver = new Revolver();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -85,6 +88,8 @@ public class RobotContainer {
     spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
     spinStop.whenPressed(()-> m_Shooter.stop());
+    spinShooter.whenPressed(()-> m_Shooter.SpinShooterSpin());
+    spinShooter.whenPressed(()-> m_Revolver.spinRevolver());
 
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));
