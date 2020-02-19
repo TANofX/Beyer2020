@@ -21,6 +21,7 @@ import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSpeeds;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Climber;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -55,6 +56,9 @@ public class RobotContainer {
   private final JoystickButton intakeDown = new JoystickButton(m_xbox, Constants.DOWN_INTAKE);
   private final JoystickButton cancel = new JoystickButton(m_xbox, Constants.CANCEL);
   private final JoystickButton revolverNextPosition = new JoystickButton(m_stick, Constants.TURN_ON_LIMELIGHT);
+  private final JoystickButton slowDown = new JoystickButton(m_stick, Constants.SLOW_DOWN);
+
+ // private final JoystickButton onOffClimber = new JoystickButton(m_stick, Constants.ON_OFF_CLIMBER);
 
 
   // The robot's subsystems and commands are defined here...
@@ -71,6 +75,8 @@ public class RobotContainer {
   private final Revolver m_Revolver = new Revolver();
 
   private final Intake m_Intake = new Intake();
+
+  private final Climber m_Climber = new Climber();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -101,13 +107,18 @@ public class RobotContainer {
     spinShooter.whenPressed(()-> m_Shooter.SpinShooterSpin());
     spinShooter.whenPressed(()-> m_Revolver.spinRevolver());
     extake.whileActiveContinuous(()-> m_Intake.activateExtake());
-    intake.whileActiveContinuous(()-> m_Intake.activateExtake());
+    intake.whileActiveContinuous(()-> m_Intake.activateExtake());  //why does this say extake?
     intakeUp.whenPressed(()-> m_Intake.moveRollerUp());
     intakeDown.whenPressed(()-> m_Intake.moveRollerDown());
     cancel.whenPressed(()-> m_Intake.stopIntake());
     spinRevolver.whenPressed(()-> m_Revolver.spinRevolver());
     cancel.whenPressed(()-> m_Revolver.stopRevolver());
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
+
+
+
+
+    //onOffClimber.whenPressed(()-> m_Climber.onOffClimber());
 
 
 

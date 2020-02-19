@@ -118,6 +118,18 @@ public class Climber extends SubsystemBase {
     return false;
   }
 
+  /*
+  public boolean onOffClimber() {
+
+        return true;
+
+    if (Constants.ON_OFF_CLIMBER = 1) {
+      return true;
+    }
+      return false;
+  }
+  */
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

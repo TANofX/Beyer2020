@@ -42,6 +42,11 @@ public class JoystickCurvatureDrive extends CommandBase {
     turnRate = turnRate/2.0;
     
     driveBase.curvatureDrive(speed, turnRate);
+
+    
+    //This SHOULD be the left trigger that is supposed to slow the robot down when held
+    //It takes the trigger from 0-1 and cuts it in half so that we are going half the speed
+    //It is basically the opposite of 2019's right trigger
   }
 
   // Called once the command ends or is interrupted.

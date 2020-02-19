@@ -84,6 +84,11 @@ public class Drives extends SubsystemBase {
     talon.setSelectedSensorPosition(0);
   }
 
+  public void halfSpeed(double speed) {
+
+    speed = (speed * (xbox.getRawAxis(Constants.SLOW_DOWN))) / 2.0;
+
+  }
 
 
   public void curvatureDrive(double speed, double turnRate) {
