@@ -45,13 +45,13 @@ Solenoid  collectorArm;
 
   }
 
-  private void moveRollerDown() {
+  public void moveRollerDown() {
 
     collectorArm.set(true);
 
   }
 
-  private void moveRollerUp() {
+  public void moveRollerUp() {
 
     collectorArm.set(false);
 
@@ -74,12 +74,20 @@ Solenoid  collectorArm;
 
   }
 
-  private void activateExtake() {
+  public void activateExtake() {
 
     if(collectorArm.get() == true) 
     intakeRollerMotor.set(ControlMode.PercentOutput, Constants.INTAKE_ROLLER_MOTOR_SPEED * -1.0);
     intakeOmniMotor.set(Constants.INTAKE_OMNI_MOTOR_SPEED * -1.0);
     intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED * -1.0);
+
+  }
+
+  public void stopIntake() {
+
+    intakeRollerMotor.set(ControlMode.PercentOutput, 0);
+    intakeOmniMotor.stopMotor();
+    intakeTransitMotor1.stopMotor();
 
   }
 

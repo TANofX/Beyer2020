@@ -7,13 +7,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+
 public class Intake extends CommandBase {
-  /**
-   * Creates a new Intake.
-   */
-  public Intake() {
+  Joystick xbox;
+  Intake intake;
+
+  public Intake(Joystick xboxIntake, Intake intakeCommand) {
+    intake = intakeCommand;
+    xbox = xboxIntake;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,6 +30,9 @@ public class Intake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    
+
   }
 
   // Called once the command ends or is interrupted.

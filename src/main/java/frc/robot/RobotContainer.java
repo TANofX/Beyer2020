@@ -20,6 +20,7 @@ import frc.robot.subsystems.Drives;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSpeeds;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,6 +33,7 @@ public class RobotContainer {
   private final Joystick m_stick2 = new Joystick(Constants.STICK_2);
   private final Joystick m_stick = new Joystick(Constants.STICK);
   private final Joystick m_xbox = new Joystick(Constants.XBOX);
+  
 
   private final JoystickButton m_ReverseTrue = new JoystickButton(m_xbox, Constants.REVERSIT_TRUE);
   private final JoystickButton m_ReverseFalse = new JoystickButton(m_xbox, Constants.REVERSEIT_FALSE);
@@ -46,7 +48,13 @@ public class RobotContainer {
   private final JoystickButton hoodUp = new JoystickButton(m_stick, Constants.HOOD_UP);
   private final JoystickButton hoodDown = new JoystickButton(m_stick, Constants.HOOD_DOWN);
   private final JoystickButton spinShooter = new JoystickButton(m_stick, 6);
-  private final JoystickButton spinRevolver = new JoystickButton(m_stick, 7);
+  private final JoystickButton spinRevolver = new JoystickButton(m_stick, Constants.SPIN_REVOLVER);
+  private final JoystickButton extake = new JoystickButton(m_xbox, Constants.EXTAKE);
+  private final JoystickButton intake = new JoystickButton(m_xbox, Constants.RUN_INTAKE);
+  private final JoystickButton intakeUp = new JoystickButton(m_xbox, Constants.UP_INTAKE);
+  private final JoystickButton intakeDown = new JoystickButton(m_xbox, Constants.DOWN_INTAKE);
+  private final JoystickButton cancel = new JoystickButton(m_xbox, Constants.CANCEL);
+  private final JoystickButton revolverNextPosition = new JoystickButton(m_stick, Constants.TURN_ON_LIMELIGHT);
 
 
   // The robot's subsystems and commands are defined here...
@@ -61,6 +69,8 @@ public class RobotContainer {
   private final Shooter m_Shooter = new Shooter();
 
   private final Revolver m_Revolver = new Revolver();
+
+  private final Intake m_Intake = new Intake();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -90,6 +100,17 @@ public class RobotContainer {
     spinStop.whenPressed(()-> m_Shooter.stop());
     spinShooter.whenPressed(()-> m_Shooter.SpinShooterSpin());
     spinShooter.whenPressed(()-> m_Revolver.spinRevolver());
+    extake.whileActiveContinuous(()-> m_Intake.activateExtake());
+    intake.whileActiveContinuous(()-> m_Intake.activateExtake());
+    intakeUp.whenPressed(()-> m_Intake.moveRollerUp());
+    intakeDown.whenPressed(()-> m_Intake.moveRollerDown());
+    cancel.whenPressed(()-> m_Intake.stopIntake());
+    spinRevolver.whenPressed(()-> m_Revolver.spinRevolver());
+    cancel.whenPressed(()-> m_Revolver.stopRevolver());
+    revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
+
+
+
 
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));

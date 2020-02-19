@@ -170,6 +170,15 @@ public final class Constants {
 
 	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.25;
 
+	public static final int COLLECTOR_TRANSIT_MOTOR = 13;
+
+	public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
+
+	public static final double REVOLVER_THRESHOLD = 25;
+
+
+
+
 
     
 }
