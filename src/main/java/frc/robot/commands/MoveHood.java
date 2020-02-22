@@ -66,5 +66,3 @@ public class MoveHood extends CommandBase {
     return false;
   }
 }
-//42O
-//boobies
