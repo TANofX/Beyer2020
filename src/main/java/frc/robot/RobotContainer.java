@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ClimberJoystick;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drives;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
@@ -40,13 +42,14 @@ public class RobotContainer {
   private final JoystickButton spinShooterSpin = new JoystickButton(m_xbox, Constants.SPIN_SHOOTER_SPIN);
   // The robot's subsystems and commands are defined here...
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Drives m_Drives = new Drives();
-
+ // private final Drives m_Drives = new Drives();
+  private final Climber m_Climber = new Climber();
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
-  private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
+  //private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
+  //private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
 
+  private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -64,16 +67,18 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    m_ReverseTrue.whenPressed(() -> m_Drives.reverseIt(true));
-    m_ReverseFalse.whenPressed(() -> m_Drives.reverseIt(false));
+    //m_ReverseTrue.whenPressed(() -> m_Drives.reverseIt(true));
+    //m_ReverseFalse.whenPressed(() -> m_Drives.reverseIt(false));
 
-    driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
+    //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
 
     //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
-    spinShooterSpin.whenPressed(()-> Shooter.SpinShooterSpin());
+    //spinShooterSpin.whenPressed(()-> Shooter.SpinShooterSpin());
 
+    CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
+    
 
-    CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
+    //CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
 
     
   }

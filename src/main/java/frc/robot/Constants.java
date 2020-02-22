@@ -43,8 +43,8 @@ public final class Constants {
      public static int SHOOTER_TRANSIT = 12;
 
      //Can id for the two Climber falcons (Talons E and F)
-     public static int CLIMBER_PRIMARY = 8;
-     public static int CLIMBER_SECONDARY = 9;
+     public static int CLIMBER_PRIMARY = 9;
+     public static int CLIMBER_SECONDARY = 8;
 
      //Can id for pcm
     public static int PCM = 15;
