@@ -42,9 +42,9 @@ public final class Constants {
      //CAN Shooter Transit  neo 550. spark19-A can 16*
      public static int SHOOTER_TRANSIT = 12;
 
-     //Can id for the two Climber falcons (Falcon E and F)
-     public static int CLIMBER_PRIMARY = 8;
-     public static int CLIMBER_SECONDARY = 9;
+     //Can id for the two Climber falcons (Talons E and F)
+     public static int CLIMBER_PRIMARY = 9;
+     public static int CLIMBER_SECONDARY = 8;
 
      //Can id for pcm
     public static int PCM = 15;

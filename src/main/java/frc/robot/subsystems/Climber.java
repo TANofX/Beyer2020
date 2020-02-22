@@ -13,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -39,8 +41,9 @@ public class Climber extends SubsystemBase {
     climberBrake = new Solenoid(Constants.PCM ,Constants.CLIMBER_Solenoid);
 
     secondaryClimberTalonSRX.follow(primaryClimberTalonSRX, FollowerType.PercentOutput);
-    secondaryClimberTalonSRX.setInverted(InvertType.FollowMaster);
-
+    secondaryClimberTalonSRX.setInverted(true);
+    primaryClimberTalonSRX.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
+    primaryClimberTalonSRX.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
     configureTalon(primaryClimberTalonSRX);
     configureTalon(secondaryClimberTalonSRX);
 
@@ -48,6 +51,7 @@ public class Climber extends SubsystemBase {
 
   private void configureTalon(TalonSRX talon) {
 
+    
     talon.setNeutralMode(NeutralMode.Brake);
     talon.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.CLIMER_THRESHOLD_CURRENT, Constants.CLIMBER_THRESHOLD_TIMEOUT));
 
@@ -81,7 +85,7 @@ public class Climber extends SubsystemBase {
 
   }
 
-  private void moveClimber(double climberSpeed) {
+  public void moveClimber(double climberSpeed) {
 
     releaseBrake();
     primaryClimberTalonSRX.set(ControlMode.PercentOutput, climberSpeed);
