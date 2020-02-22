@@ -173,6 +173,22 @@ public class Limelight implements Subsystem {
 
   }
 
+  public boolean targetVisible(){
+
+    return (getTargetingValue("tv") == 1.0);
+
+  }
+
+  public double getOffset(){
+
+    double targetViewAngle = (getTargetingValue("tx"));
+
+    return targetViewAngle;
+
+  }
+
+  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

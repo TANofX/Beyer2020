@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+//need constant for collector stationary w/ ID 12 and shootershoot is 16* 19-A and 19-C
 package frc.robot;
 
 /**
@@ -23,10 +23,10 @@ public final class Constants {
     //CAN ID for Intake Omni wheels (Spark B)
     public static int INTAKE_OMNI_WHEEL = 14;
 
-    //CAN ID For Intake Rollers (Talon AK)
+    //CAN ID For Intake Rollers (Talon AK) changed to spark roller in new logical collection*
     public static int INTAKE_ROLLERS = 11;
     
-	//CAN ID'S For the Falcons (A,B,C,D) in the Drive Base
+	//CAN ID'S For the Falcons (A,B,C,D) in the Drive Base left are primary*
     public static int LEFT_PRIMARY_MOTOR = 5;
     public static int RIGHT_PRIMARY_MOTOR = 6;
     public static int LEFT_SECONDARY_MOTOR = 4;
@@ -39,18 +39,18 @@ public final class Constants {
      //CAN ID For hood Neo 550 (Spark A)
      public static int HOOD_MOTOR = 17;
 
-     //CAN Shooter Transit  neo 550
+     //CAN Shooter Transit  neo 550. spark19-A can 16*
      public static int SHOOTER_TRANSIT = 12;
 
-     //Can id for the two Climber falcons (Talons E and F)
+     //Can id for the two Climber falcons (Falcon E and F)
      public static int CLIMBER_PRIMARY = 8;
      public static int CLIMBER_SECONDARY = 9;
 
      //Can id for pcm
     public static int PCM = 15;
 
-     //pcm slot of the solenoid on the climber
-    public static int CLIMBER_Solenoid = 1 ;
+     //pcm slot of the solenoid on the climber we dont have this anymore
+     //public static int CLIMBER_Solenoid = 1 ;
 
      //climber wheel(falcon i)
 
@@ -81,8 +81,8 @@ public final class Constants {
     public static double DRIVE_WHEEL_CIRCUMFERENCE = 6.125 * Math.PI;
     public static int FALCON_COUNTS_PER_REV = 2048;
        
-    //Constants for the Revolver
-    public static final int REVOLVER_MOTOR_ID = 8;
+    //Constants for the Revolver (spark c2)
+    public static final int REVOLVER_MOTOR_ID = 10;
     public static final double REVOLVER_CURRENT_LIMIT = 40.0;
 
     // RoboRIO input id for calibration switch
@@ -165,7 +165,7 @@ public final class Constants {
     public static final int REVOLVER_WHEEL_CIRCUMFERENCE = 1;
 
     //revolver analog chanal
-    public static final int FUEL_CELL_SENSOR_PORT = 0;
+    public static final int FUEL_CELL_SENSOR_PORT = 2;
     public static final int REVOLVER_POSITION_SENSOR = 1;
 
 	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.25;
@@ -175,6 +175,10 @@ public final class Constants {
 	public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
 
 	public static final double REVOLVER_THRESHOLD = 25;
+
+	public static final int INTAKE_FUEL_CELL_SENSOR = 4;
+
+
 
 
 

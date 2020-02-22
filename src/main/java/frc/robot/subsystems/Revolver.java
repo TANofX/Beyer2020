@@ -22,14 +22,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.SpinRevolver;
+import frc.robot.utils.CircularArrayList;
 
 public class Revolver extends SubsystemBase {
   private CANPIDController revolverController; 
   private CANSparkMax revolverMotor;
   private CANSparkMax collectorTransit;
   private CANEncoder revolverEncoder;
-  private AnalogInput fuelCellSensor;
+  private DigitalInput fuelCellSensor;
   private DigitalInput revolverPositionSensor;
+  private CircularArrayList<Integer> revolverArray; 
 
 
   private double targetPosition = 0.0;
@@ -46,8 +48,15 @@ public class Revolver extends SubsystemBase {
     revolverController = revolverMotor.getPIDController();
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, Constants.NEO550_COUNTS_PER_REV);
     revolverMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
+    fuelCellSensor = new DigitalInput(Constants.FUEL_CELL_SENSOR_PORT);
     revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
+    revolverArray = new CircularArrayList<Integer>(5);
+    for (int i = 0; i < 5; i++) {
+
+      revolverArray.add(i, 0);
+
+    }
+
   }
 
   public void spinRevolver() {
@@ -110,6 +119,52 @@ public class Revolver extends SubsystemBase {
       }
     
       else return false;
+
+  }
+
+  public boolean checkForFuel() {
+
+    return !fuelCellSensor.get();
+ 
+  }
+
+  public boolean intakeFuelCell() {
+
+    if (checkForFuel()){
+
+      revolverArray.set(this.currentPosition(), 1);
+
+      return true;
+
+    }
+
+    else {
+      
+      revolverArray.set(this.currentPosition(), 0);
+
+      return false;
+
+    }
+
+  }
+
+  public void shootFuelCell(){
+
+    revolverArray.set(this.currentPosition() + 2, 0);
+
+  }
+
+  public int sumFuelCells() {
+
+    int sum = 0;
+
+    for (int i = 0; i < 5; i++){
+
+      sum = sum + revolverArray.get(i);
+
+    }
+
+    return sum;
 
   }
 

@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -24,6 +25,7 @@ TalonSRX intakeRollerMotor;
 CANSparkMax intakeOmniMotor;
 CANSparkMax intakeTransitMotor1;
 Solenoid  collectorArm;
+DigitalInput fuelCellSensor;
 
 
 
@@ -34,6 +36,7 @@ Solenoid  collectorArm;
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
     intakeTransitMotor1 = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
     collectorArm = new Solenoid(Constants.PCM ,Constants.INTAKE_solenoid);
+    fuelCellSensor = new DigitalInput(Constants.INTAKE_FUEL_CELL_SENSOR);
 
     configureTalon(intakeRollerMotor);
 
@@ -89,6 +92,12 @@ Solenoid  collectorArm;
     intakeOmniMotor.stopMotor();
     intakeTransitMotor1.stopMotor();
 
+  }
+
+  public boolean checkForFuel() {
+
+    return !fuelCellSensor.get();
+ 
   }
 
   @Override
