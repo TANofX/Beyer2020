@@ -24,7 +24,7 @@ public final class Constants {
     public static int INTAKE_OMNI_WHEEL = 14;
 
     //CAN ID For Intake Rollers (Talon AK) changed to spark roller in new logical collection*
-    public static int INTAKE_ROLLERS = 11;
+    public static int INTAKE_ROLLERS = 12;
     
 	//CAN ID'S For the Falcons (A,B,C,D) in the Drive Base left are primary*
     public static int LEFT_PRIMARY_MOTOR = 5;
@@ -40,7 +40,7 @@ public final class Constants {
      public static int HOOD_MOTOR = 17;
 
      //CAN Shooter Transit  neo 550. spark19-A can 16*
-     public static int SHOOTER_TRANSIT = 12;
+     public static int SHOOTER_TRANSIT = 16;
 
      //Can id for the two Climber falcons (Talons E and F)
      public static int CLIMBER_PRIMARY = 9;
@@ -55,8 +55,8 @@ public final class Constants {
      //climber wheel(falcon i)
 
      //Intake Motor Speeds
-    public static int INTAKE_OMNI_MOTOR_SPEED = 1;
-    public static int INTAKE_TRANSIT1_SPEED = 1;
+    public static double INTAKE_OMNI_MOTOR_SPEED = 0.75;
+    public static double INTAKE_TRANSIT1_SPEED = 0.1;
 
      //pcm slot of the solenoid on the Intake
     public static int INTAKE_solenoid = 0;
@@ -91,7 +91,7 @@ public final class Constants {
 
 
     //Button import for spinning the revolver
-    public static final int SPIN_REVOLVER = 4;
+    
 
     //Button import for spinning the shooter
     public static final int SPIN_SHOOTER_SPIN = 3;
@@ -130,6 +130,7 @@ public final class Constants {
     public static int RUN_INTAKE = 3; //Trigger
     public static int SLOW_DOWN = 2;  //Trigger
     public static int CANCEL = 7;
+    public static int SPIN_REVOLVER = 1;
 
     //Button Inputs for Flight Stick Controller
     public static int SHOOT = 1;
@@ -166,17 +167,27 @@ public final class Constants {
 
     //revolver analog chanal
     public static final int FUEL_CELL_SENSOR_PORT = 2;
-    public static final int REVOLVER_POSITION_SENSOR = 1;
+    public static final int REVOLVER_POSITION_SENSOR = 0;
 
-	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.25;
+	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
 
-	public static final int COLLECTOR_TRANSIT_MOTOR = 13;
+	public static final int COLLECTOR_TRANSIT_MOTOR = 11;
 
 	public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
 
 	public static final double REVOLVER_THRESHOLD = 25;
 
 	public static final int INTAKE_FUEL_CELL_SENSOR = 4;
+
+	public static final int LED_PORT = 0;
+
+	public static final int LED_BUFFER_LENGTH = 55; // = the sum of all LED strip lengths on the robot //
+
+	public static final double REVOLVER_CALIBRATION_SPEED = 3003.0;
+
+	public static final int INTAKE_FOREWARD_SOLENOID = 0;
+
+	public static final int INTAKE_REVERSE_SOLENOID = 1;
 
 
 

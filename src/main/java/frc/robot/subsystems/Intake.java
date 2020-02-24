@@ -15,16 +15,19 @@ import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
-TalonSRX intakeRollerMotor;
+CANSparkMax intakeRollerMotor;
 CANSparkMax intakeOmniMotor;
 CANSparkMax intakeTransitMotor1;
-Solenoid  collectorArm;
+DoubleSolenoid  collectorArm;
 DigitalInput fuelCellSensor;
 
 
@@ -32,67 +35,79 @@ DigitalInput fuelCellSensor;
 
   public Intake() {
 
-    intakeRollerMotor = new TalonSRX(Constants.INTAKE_ROLLERS);
+    intakeRollerMotor = new CANSparkMax(Constants.INTAKE_ROLLERS, MotorType.kBrushless);
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
     intakeTransitMotor1 = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
-    collectorArm = new Solenoid(Constants.PCM ,Constants.INTAKE_solenoid);
+    collectorArm = new DoubleSolenoid(Constants.PCM ,Constants.INTAKE_FOREWARD_SOLENOID, Constants.INTAKE_REVERSE_SOLENOID);
     fuelCellSensor = new DigitalInput(Constants.INTAKE_FUEL_CELL_SENSOR);
 
     configureTalon(intakeRollerMotor);
 
   }
 
-  private void configureTalon(TalonSRX talon) {
-
-    talon.setNeutralMode(NeutralMode.Coast);
+  private void configureTalon(CANSparkMax talon) {
 
   }
 
   public void moveRollerDown() {
 
-    collectorArm.set(true);
+    collectorArm.set(DoubleSolenoid.Value.kForward);
 
   }
 
   public void moveRollerUp() {
 
-    collectorArm.set(false);
+    collectorArm.set(DoubleSolenoid.Value.kReverse);
 
   }
+
+
 
 
   private void spinRoller() {
 
-    if(collectorArm.get() == true) intakeRollerMotor.set(ControlMode.PercentOutput, 0.25);
+   if(collectorArm.get() == DoubleSolenoid.Value.kForward) intakeRollerMotor.set(0.25 * -1.0);
 
   }
 
-  private void activateIntake() {
+  public void activateIntake() {
 
-    if(collectorArm.get() == true) { 
-    intakeRollerMotor.set(ControlMode.PercentOutput, Constants.INTAKE_ROLLER_MOTOR_SPEED);
+    if(collectorArm.get() == DoubleSolenoid.Value.kForward) { 
     intakeOmniMotor.set(Constants.INTAKE_OMNI_MOTOR_SPEED);
-    intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED);
+    intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED * 1.0);
     }
 
   }
 
   public void activateExtake() {
 
-    if(collectorArm.get() == true) 
-    intakeRollerMotor.set(ControlMode.PercentOutput, Constants.INTAKE_ROLLER_MOTOR_SPEED * -1.0);
+    if(collectorArm.get() == DoubleSolenoid.Value.kForward) {
+    intakeRollerMotor.set(Constants.INTAKE_ROLLER_MOTOR_SPEED * 1.0);
     intakeOmniMotor.set(Constants.INTAKE_OMNI_MOTOR_SPEED * -1.0);
     intakeTransitMotor1.set(Constants.INTAKE_TRANSIT1_SPEED * -1.0);
-
+    }
   }
 
   public void stopIntake() {
 
-    intakeRollerMotor.set(ControlMode.PercentOutput, 0);
+    
     intakeOmniMotor.stopMotor();
     intakeTransitMotor1.stopMotor();
 
   }
+
+  public void activateIntakeRollers() {
+
+   intakeRollerMotor.set(Constants.INTAKE_ROLLER_MOTOR_SPEED * -1.0);
+
+  }
+
+  public void stopIntakeRollers() {
+
+  intakeRollerMotor.set(0);
+
+  }
+
 
   public boolean checkForFuel() {
 
@@ -102,6 +117,8 @@ DigitalInput fuelCellSensor;
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putBoolean("Intake Fuel Cell", checkForFuel());
     // This method will be called once per scheduler run
   }
 }

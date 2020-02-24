@@ -104,6 +104,11 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  public void playMusic() {
+
+
+  }
+
   public void SpinShooterSpin() {
 
     primaryShooterTalonFX.set(ControlMode.PercentOutput, 1.0);
@@ -136,13 +141,13 @@ public class Shooter extends SubsystemBase {
 
   public void hoodUp() {
 
-    hoodMotor.set(0.5);
+    hoodMotor.set(-0.1);
 
   }
 
   public void hoodDown() {
 
-    hoodMotor.set(-0.5);
+    hoodMotor.set(0.1);
     
   }
 
@@ -169,7 +174,7 @@ public class Shooter extends SubsystemBase {
 
   public void shoot() {
 
-    transitMotor.set(Constants.SHOOTER_TRANSIT_SPEED);
+    transitMotor.set(Constants.SHOOTER_TRANSIT_SPEED * -1.0);
 
   }
 

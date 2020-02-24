@@ -7,42 +7,66 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Revolver;
+
 
 
 public class Intake extends CommandBase {
-  Joystick xbox;
-  Intake intake;
+  frc.robot.subsystems.Intake intake;
+  Revolver revolver;
 
-  public Intake(Joystick xboxIntake, Intake intakeCommand) {
+
+  public Intake(frc.robot.subsystems.Intake intakeCommand, Revolver rev) {
     intake = intakeCommand;
-    xbox = xboxIntake;
+    revolver = rev;
 
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    intake.moveRollerDown();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    
+    revolver.sumFuelCells();
 
+    if ((revolver.sumFuelCells() > 3) && (intake.checkForFuel())) {
+
+        intake.stopIntakeRollers();
+    }
+
+    else {
+
+      intake.activateIntakeRollers();
+
+    }
+
+    intake.activateIntake();
+    revolver.runTransit();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
+    intake.stopIntakeRollers();
+    intake.stopIntake();
+    revolver.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (revolver.sumFuelCells() == 5);
   }
 }

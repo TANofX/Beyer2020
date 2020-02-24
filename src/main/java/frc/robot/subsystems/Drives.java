@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -84,12 +85,12 @@ public class Drives extends SubsystemBase {
     talon.setSelectedSensorPosition(0);
   }
 
-  public void halfSpeed(double speed) {
+  public void playMusic() {
 
-    speed = (speed * (xbox.getRawAxis(Constants.SLOW_DOWN))) / 2.0;
+    
+
 
   }
-
 
   public void curvatureDrive(double speed, double turnRate) {
 

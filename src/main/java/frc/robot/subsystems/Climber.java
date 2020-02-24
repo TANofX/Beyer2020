@@ -20,7 +20,6 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -29,7 +28,7 @@ public class Climber extends SubsystemBase {
 
   private TalonSRX primaryClimberTalonSRX;
   private TalonSRX secondaryClimberTalonSRX;
-  private Solenoid climberBrake;
+  private boolean enabled = false;
 
   /**
    * Creates a new Climber.
@@ -38,7 +37,6 @@ public class Climber extends SubsystemBase {
 
     primaryClimberTalonSRX = new TalonSRX(Constants.CLIMBER_PRIMARY);
     secondaryClimberTalonSRX = new TalonSRX(Constants.CLIMBER_SECONDARY);
-    climberBrake = new Solenoid(Constants.PCM ,Constants.CLIMBER_Solenoid);
 
     secondaryClimberTalonSRX.follow(primaryClimberTalonSRX, FollowerType.PercentOutput);
     secondaryClimberTalonSRX.setInverted(true);
@@ -79,35 +77,24 @@ public class Climber extends SubsystemBase {
 
   public void goToHeight(double inches) {
     
-    releaseBrake();
-    double requiredCounts = inchesToEncoderCounts(inches);
-    primaryClimberTalonSRX.set(ControlMode.MotionMagic, requiredCounts);
+    if (enabled) {
+      double requiredCounts = inchesToEncoderCounts(inches);
+      primaryClimberTalonSRX.set(ControlMode.MotionMagic, requiredCounts);
+    }
 
   }
 
   public void moveClimber(double climberSpeed) {
-
-    releaseBrake();
+    if (enabled) {
     primaryClimberTalonSRX.set(ControlMode.PercentOutput, climberSpeed);
+    }
 
 }
 
-  public void setBrake(){
-
-    climberBrake.set(false);
-
-  }
-
-  public void releaseBrake(){
-
-    climberBrake.set(true);
-
-  }
 
   public void stopClimber() {
 
     primaryClimberTalonSRX.set(ControlMode.PercentOutput, 0);
-    setBrake();
 
   }
 
@@ -122,17 +109,12 @@ public class Climber extends SubsystemBase {
     return false;
   }
 
-  /*
-  public boolean onOffClimber() {
+  public void enableClimber(boolean isEnabled) {
 
-        return true;
+    enabled = isEnabled;
 
-    if (Constants.ON_OFF_CLIMBER = 1) {
-      return true;
-    }
-      return false;
   }
-  */
+
 
   @Override
   public void periodic() {

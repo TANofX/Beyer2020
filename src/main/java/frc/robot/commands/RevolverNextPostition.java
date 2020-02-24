@@ -7,36 +7,30 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Revolver;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Revolver;
 
-
-public class CalibrateRevolver extends CommandBase {
+public class RevolverNextPostition extends CommandBase {
   /**
-   * Creates a new CalibrateRevolver.
+   * Creates a new RevolverNextPostition.
    */
   private Revolver revolver;
 
-  public CalibrateRevolver(Revolver revolver) {
-    // Use addequirements() here to declare subsystem dependencies.
-    this.revolver = revolver;
-
+  public RevolverNextPostition(Revolver revolver) {
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(revolver);
-
+    this.revolver = revolver;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    revolver.spinRevolver();
+    revolver.rotateToPosition(revolver.currentPosition() + 1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
   }
 
   // Called once the command ends or is interrupted.
@@ -47,9 +41,6 @@ public class CalibrateRevolver extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    return revolver.calibrateRevolver();
-    
+    return revolver.positionCheck();
   }
-  
 }
