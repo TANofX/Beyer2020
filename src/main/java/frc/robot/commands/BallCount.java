@@ -36,7 +36,7 @@ public class BallCount extends CommandBase  {
 
     if (revolver.positionCheck()) {
 
-      revolver.intakeFuelCell();
+    revolver.intakeFuelCell();
     revolver.rotateToPosition(revolver.currentPosition() + 1);
     timesRun++;
 

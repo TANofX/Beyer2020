@@ -77,6 +77,7 @@ public class RobotContainer {
   private final JoystickAxisButton runIntake = new JoystickAxisButton(m_xbox, Constants.RUN_INTAKE);
   private final JoystickAxisButton enableClimber = new JoystickAxisButton(m_stick, Constants.ON_OFF_CLIMBER, true);
   private final JoystickButton cancelAll = new JoystickButton(m_xbox, Constants.CANCEL);
+  //private final JoystickButton superSpeed = new
 
 
   // The robot's subsystems and commands are defined here...
@@ -134,7 +135,7 @@ public class RobotContainer {
     spinRevolver.whenPressed(()-> m_Revolver.spinRevolver());
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
     //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
-    SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver) .andThen(new BallCount(m_Revolver)));
+    SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
     SmartDashboard.putData("next revolver position", new RevolverNextPostition(m_Revolver));
 
     enableClimber.whenActive(()-> m_Climber.enableClimber(true));

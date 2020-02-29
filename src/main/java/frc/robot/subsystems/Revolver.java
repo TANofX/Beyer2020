@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -57,7 +58,7 @@ public class Revolver extends SubsystemBase {
       revolverArray.add(i, 0);
 
     }
-
+    revolverMotor.setSmartCurrentLimit(10, 11000);   //.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.THRESHOLD_CURRENT, Constants.THRESHOLD_TIMEOUT));
     revolverController.setP(0.000001);
     revolverController.setI(0.000000004);
     revolverController.setD(0.0);
@@ -233,6 +234,7 @@ public class Revolver extends SubsystemBase {
     SmartDashboard.putNumber("voltage for fuel cell sensor", fuelCellSensor.getVoltage());
     SmartDashboard.putNumber("Revolver Target Position", targetPosition);
     SmartDashboard.putNumber("Next Empty Postion", nextEmptyPosition());
+    SmartDashboard.putNumber("Revolver Motor Voltage", revolverMotor.getOutputCurrent());
 
     for (int x = 0; x < 5; x++) {
       SmartDashboard.putBoolean("Fuel Cell " + x, (revolverArray.get(x) == 1));

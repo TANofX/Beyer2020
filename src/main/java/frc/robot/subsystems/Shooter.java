@@ -73,6 +73,8 @@ public class Shooter extends SubsystemBase {
     
 
     secondaryShooterTalonFX.follow(primaryShooterTalonFX);
+
+    
   }
 
   private void configureTalon(TalonSRX talon) {
@@ -227,6 +229,7 @@ public boolean atSpeed() {
     SmartDashboard.putNumber("Shooter Speed", getprimaryShooterSpeed()); 
     SmartDashboard.putNumber("Target Shooter Speed", targetShooterSpeed.getMotorSpeed());
     SmartDashboard.putNumber("Hood Angle", getAngle());
+    SmartDashboard.putNumber("Primary Shooter Motor Speed", primaryShooterTalonFX.getMotorOutputPercent());
   }
 }
 

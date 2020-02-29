@@ -58,11 +58,11 @@ public final class Constants {
 
     //Speeds
     public static double SHOOTER_TRANSIT_SPEED = 0.75;
-    public static double INTAKE_OMNI_MOTOR_SPEED = 0.75;
-    public static double INTAKE_TRANSIT1_SPEED = 0.25;
+    public static double INTAKE_OMNI_MOTOR_SPEED = 0.5; //changed from 0.75
+    public static double INTAKE_TRANSIT1_SPEED = 0.05;
     public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
     public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
-    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
+    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.1;// was .25
 
     
     
@@ -130,6 +130,7 @@ public final class Constants {
     public static int HIGH_SHOOTER_SPEED = 7;
     public static int MEDIUM_SHOOTER_SPEED = 9;
     public static int LOW_SHOOTER_SPEED = 11;
+    public static int SUPER_SHOOTER_SPEED = 6;
 
     //Tan[x] Drive flight sticks
     public static final int LEFT_AXIS = 1;

@@ -11,9 +11,10 @@ package frc.robot.subsystems;
  * Add your docs here.
  */
 public enum ShooterSpeeds {
-LOWSPEED(2000),
-MEDIUMSPEED(5000),
-HIGHSPEED(7900), 
+LOWSPEED(5000),
+MEDIUMSPEED(7000), //was 5000
+HIGHSPEED(9500), //was 7900
+SUPERSPEED(16000),
 OFF(0);
 
 private double actualSpeed;

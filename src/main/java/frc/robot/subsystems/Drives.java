@@ -191,16 +191,16 @@ public class Drives extends SubsystemBase {
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("LeftPrimaryMotorRpm", leftPrimaryTalonFX.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("RightPrimaryMotorRpm", rightPrimaryTalonFX.getSelectedSensorVelocity(0));
+    //SmartDashboard.putNumber("LeftPrimaryMotorRpm", leftPrimaryTalonFX.getSelectedSensorVelocity(0));
+    //SmartDashboard.putNumber("RightPrimaryMotorRpm", rightPrimaryTalonFX.getSelectedSensorVelocity(0));
 
     SmartDashboard.putNumber("targetError", rightPrimaryTalonFX.getClosedLoopError());
-    SmartDashboard.putNumber("rightMotorPosition", rightPrimaryTalonFX.getSelectedSensorPosition(0));
+    //SmartDashboard.putNumber("rightMotorPosition", rightPrimaryTalonFX.getSelectedSensorPosition(0));
 
-    SmartDashboard.putNumber("LeftPrimaryMotorVoltage", leftPrimaryTalonFX.getMotorOutputVoltage());
-    SmartDashboard.putNumber("LeftSecondaryMotorVoltage", leftSecondaryTalonFX.getMotorOutputVoltage());
-    SmartDashboard.putNumber("RightPrimaryMotorVoltage", rightPrimaryTalonFX.getMotorOutputVoltage());
-    SmartDashboard.putNumber("RigtSecondaryMotorVoltage", rightSecondaryTalonFX.getMotorOutputVoltage());
+    //SmartDashboard.putNumber("LeftPrimaryMotorVoltage", leftPrimaryTalonFX.getMotorOutputVoltage());
+    //SmartDashboard.putNumber("LeftSecondaryMotorVoltage", leftSecondaryTalonFX.getMotorOutputVoltage());
+    //SmartDashboard.putNumber("RightPrimaryMotorVoltage", rightPrimaryTalonFX.getMotorOutputVoltage());
+    //SmartDashboard.putNumber("RigtSecondaryMotorVoltage", rightSecondaryTalonFX.getMotorOutputVoltage());
 
     // This method will be called once per scheduler run
   }
