@@ -160,7 +160,9 @@ public class Revolver extends SubsystemBase {
       if (revolverPositionSensor.get()) {
 
         stopRevolver();
+        stopTransit();
         revolverEncoder.setPosition(0.0);
+
         return true;
 
       }

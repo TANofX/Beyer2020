@@ -55,7 +55,7 @@ public class IntakeCommand extends CommandBase {
     }
 
     if (revolver.isRotating()) {
-      intake.stopIntake();
+     intake.stopIntake();
     }
 
     else   {

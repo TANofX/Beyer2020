@@ -59,10 +59,10 @@ public final class Constants {
     //Speeds
     public static double SHOOTER_TRANSIT_SPEED = 0.75;
     public static double INTAKE_OMNI_MOTOR_SPEED = 0.5; //changed from 0.75
-    public static double INTAKE_TRANSIT1_SPEED = 0.05;
+    public static double INTAKE_TRANSIT1_SPEED = 0.05; //0.05
     public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
     public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
-    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.1;// was .25
+    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.15;// was .25
 
     
     
