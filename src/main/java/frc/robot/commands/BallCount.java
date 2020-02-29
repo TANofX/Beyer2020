@@ -8,55 +8,51 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Revolver;
-import frc.robot.subsystems.Shooter;
 
-public class Shoot extends CommandBase {
-  private Shooter shooter;
-  private Revolver revolver;
-  private Limelight limelight;
- 
+public class BallCount extends CommandBase  {
   /**
-   * Creates a new Shoot.
+   * Creates a new BallCount.
    */
-  public Shoot(Shooter shooterSubsytem, Revolver revolverSubsteym, Limelight limelightSubsystes) {
+
+  private Revolver revolver;
+  private int timesRun;
+  public BallCount(Revolver rev) {
     // Use addRequirements() here to declare subsystem dependencies.
+    revolver = rev;
 
-    shooter = shooterSubsytem;
-    revolver = revolverSubsteym;
-    limelight = limelightSubsystes;
-
-    addRequirements(shooter, revolver);
+    addRequirements(revolver);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    shooter.shoot();
-
+    timesRun = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    if (revolver.positionCheck()) {
+
+      revolver.intakeFuelCell();
+    revolver.rotateToPosition(revolver.currentPosition() + 1);
+    timesRun++;
+
+    }
+
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    shooter.stopShoot();
-    revolver.shootFuelCell();
-    revolver.rotateToPosition(revolver.currentPosition() + 1);
-  
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-    }
+    return timesRun > 4;
+  }
 }

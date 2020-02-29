@@ -7,56 +7,76 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Revolver;
-import frc.robot.subsystems.Shooter;
 
-public class Shoot extends CommandBase {
-  private Shooter shooter;
-  private Revolver revolver;
-  private Limelight limelight;
- 
-  /**
-   * Creates a new Shoot.
-   */
-  public Shoot(Shooter shooterSubsytem, Revolver revolverSubsteym, Limelight limelightSubsystes) {
+
+
+public class IntakeCommand extends CommandBase {
+  frc.robot.subsystems.Intake intake;
+  Revolver revolver;
+
+
+  public IntakeCommand(frc.robot.subsystems.Intake intakeCommand, Revolver rev) {
+    intake = intakeCommand;
+    revolver = rev;
+
     // Use addRequirements() here to declare subsystem dependencies.
-
-    shooter = shooterSubsytem;
-    revolver = revolverSubsteym;
-    limelight = limelightSubsystes;
-
-    addRequirements(shooter, revolver);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    shooter.shoot();
+    intake.moveRollerDown();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+
+    if ((revolver.sumFuelCells() == 4) && (intake.checkForFuel())) {
+
+        intake.stopIntakeRollers();
+    }
+
+    else if ((revolver.sumFuelCells() == 5) && (intake.checkForFuel())) {
+
+     intake.activateExtake();
+
+    }
+
+    else {
+      intake.activateIntakeRollers();
+    }
+
+    if (revolver.isRotating()) {
+      intake.stopIntake();
+    }
+
+    else   {
+    intake.activateIntake();
+    revolver.runTransit();
+    }
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    shooter.stopShoot();
-    revolver.shootFuelCell();
-    revolver.rotateToPosition(revolver.currentPosition() + 1);
-  
-
+    intake.stopIntakeRollers();
+    intake.stopIntake();
+    revolver.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-    }
+    return (revolver.sumFuelCells() == 5);
+  }
 }

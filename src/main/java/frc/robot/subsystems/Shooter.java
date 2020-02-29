@@ -58,7 +58,7 @@ public class Shooter extends SubsystemBase {
 
     hoodMotor = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
     hoodController = hoodMotor.getPIDController();
-    hoodEncoder = hoodMotor.getEncoder(EncoderType.kHallSensor, Constants.NEO550_COUNTS_PER_REV);
+    hoodEncoder = hoodMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
     hoodMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
     hoodMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
 

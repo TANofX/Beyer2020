@@ -28,21 +28,26 @@ public class RevolverIntake extends CommandBase {
   @Override
   public void initialize() {
 
-    revolver.intakeFuelCell();
-    int next = revolver.nextEmptyPosition();
-    revolver.rotateToPosition(next);
+    if ( revolver.intakeFuelCell()){
+      int next = revolver.nextEmptyPosition();
+   revolver.rotateToPosition(next);
+  }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    if (revolver.intakeFuelCell()) {
-
-    int next = revolver.nextEmptyPosition();
-    revolver.rotateToPosition(next);
+    if (revolver.positionCheck()) {
+     if ( revolver.intakeFuelCell()){
+         int next = revolver.nextEmptyPosition();
+      revolver.rotateToPosition(next);
+     }
     }
+    
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
@@ -54,6 +59,6 @@ public class RevolverIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (revolver.sumFuelCells() == 5);
+    return ((revolver.sumFuelCells() == 5) && (revolver.positionCheck()));
   }
 }

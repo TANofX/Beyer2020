@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -28,7 +29,7 @@ CANSparkMax intakeRollerMotor;
 CANSparkMax intakeOmniMotor;
 CANSparkMax intakeTransitMotor1;
 DoubleSolenoid  collectorArm;
-DigitalInput fuelCellSensor;
+AnalogInput fuelCellSensor;
 
 
 
@@ -39,7 +40,7 @@ DigitalInput fuelCellSensor;
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
     intakeTransitMotor1 = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
     collectorArm = new DoubleSolenoid(Constants.PCM ,Constants.INTAKE_FOREWARD_SOLENOID, Constants.INTAKE_REVERSE_SOLENOID);
-    fuelCellSensor = new DigitalInput(Constants.INTAKE_FUEL_CELL_SENSOR);
+    fuelCellSensor = new AnalogInput(Constants.INTAKE_FUEL_CELL_SENSOR);
 
     configureTalon(intakeRollerMotor);
 
@@ -111,7 +112,7 @@ DigitalInput fuelCellSensor;
 
   public boolean checkForFuel() {
 
-    return !fuelCellSensor.get();
+    return (fuelCellSensor.getVoltage() <= 1.0);
  
   }
 
@@ -119,6 +120,7 @@ DigitalInput fuelCellSensor;
   public void periodic() {
 
     SmartDashboard.putBoolean("Intake Fuel Cell", checkForFuel());
+    SmartDashboard.putNumber("Intake voltage", fuelCellSensor.getVoltage());
     // This method will be called once per scheduler run
   }
 }

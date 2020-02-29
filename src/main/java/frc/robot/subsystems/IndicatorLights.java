@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -151,6 +152,7 @@ public class IndicatorLights extends SubsystemBase {
   public void periodic() {
 
     if(driveBase != null) {
+      SmartDashboard.putBoolean("Drive base boolean lights exist?", true);
 
       if(driveBase.isReversed()) {
 

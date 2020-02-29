@@ -16,9 +16,12 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.BallCount;
 import frc.robot.commands.CalibrateRevolver;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.ClimberJoystick;
+import frc.robot.commands.Extake;
+import frc.robot.commands.FollowTarget;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
 import frc.robot.commands.MoveHood;
@@ -69,6 +72,7 @@ public class RobotContainer {
   private final JoystickButton intakeDown = new JoystickButton(m_xbox, Constants.DOWN_INTAKE);
   private final JoystickButton cancel = new JoystickButton(m_xbox, Constants.CANCEL);
   private final JoystickButton revolverNextPosition = new JoystickButton(m_stick, Constants.TURN_ON_LIMELIGHT);
+  private final JoystickButton lineUP = new JoystickButton(m_stick, Constants.LINE_UP);
   private final JoystickButton slowDown = new JoystickButton(m_stick, Constants.SLOW_DOWN);
   private final JoystickAxisButton runIntake = new JoystickAxisButton(m_xbox, Constants.RUN_INTAKE);
   private final JoystickAxisButton enableClimber = new JoystickAxisButton(m_stick, Constants.ON_OFF_CLIMBER, true);
@@ -84,20 +88,14 @@ public class RobotContainer {
   //private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
 
   private final Shooter m_Shooter = new Shooter();
-
   private final Revolver m_Revolver = new Revolver();
-
   private final Intake m_Intake = new Intake();
-
   private final Limelight m_Limelight = new Limelight();
-
-  private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
-
+ // private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
   private final Climber m_Climber = new Climber();
   private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
-
   private final IndicatorLights m_Direction = new IndicatorLights(5, m_Drives);
-  private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver);
+ // private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -115,38 +113,34 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
     m_ReverseTrue.whenPressed(() -> m_Drives.reverseIt(true));
     m_ReverseFalse.whenPressed(() -> m_Drives.reverseIt(false));
-
-    //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
-    SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver));
-    SmartDashboard.putData("next revolver position", new RevolverNextPostition(m_Revolver));
-
-    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
+    CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
+    
     spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
     spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
     spinStop.whenPressed(()-> m_Shooter.stop());
     shoot.whenPressed(new Shoot(m_Shooter, m_Revolver, m_Limelight).withTimeout(1.0));
-    extake.whileActiveContinuous(()-> m_Intake.activateExtake());
-    runIntake.whileActiveContinuous(new frc.robot.commands.Intake(m_Intake, m_Revolver).alongWith(new RevolverIntake(m_Revolver)));  //why does this say extake?
+    hoodUp.whileHeld(new MoveHood(m_Shooter, true));
+    hoodDown.whileHeld(new MoveHood(m_Shooter, false));
+    
+    extake.whileActiveContinuous(new Extake(m_Intake));
+    runIntake.whileActiveContinuous(new frc.robot.commands.IntakeCommand(m_Intake, m_Revolver).alongWith(new RevolverIntake(m_Revolver)));  //why does this say extake?
     intakeUp.whenPressed(()-> m_Intake.moveRollerUp());
     intakeDown.whenPressed(()-> m_Intake.moveRollerDown());
+    
     spinRevolver.whenPressed(()-> m_Revolver.spinRevolver());
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
+    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
+    SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver) .andThen(new BallCount(m_Revolver)));
+    SmartDashboard.putData("next revolver position", new RevolverNextPostition(m_Revolver));
+
     enableClimber.whenActive(()-> m_Climber.enableClimber(true));
     enableClimber.whenInactive(()-> m_Climber.enableClimber(false));
     cancel.whenPressed(new CancelAll(m_Revolver, m_Intake, m_Shooter, m_Climber));
-
-
-    hoodUp.whileHeld(new MoveHood(m_Shooter, true));
-    hoodDown.whileHeld(new MoveHood(m_Shooter, false));
-
     CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
-    
-
-    CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
-
     
   }
 

@@ -17,109 +17,95 @@ package frc.robot;
  */
 public final class Constants {
 
-    //CAN ID For Intake Transit (Spark D)
-    public static int INTAKE_TRANSIT = 13;
+    //CAN ID's
+    public static int INTAKE_TRANSIT = 13;  //Spark D
+    public static int INTAKE_OMNI_WHEEL = 14;  //Spark B
+    public static int INTAKE_ROLLERS = 12;  //Spark Roller
+    public static int LEFT_PRIMARY_MOTOR = 5;  //Falcon A
+    public static int RIGHT_PRIMARY_MOTOR = 6;  //Falcon B
+    public static int LEFT_SECONDARY_MOTOR = 4;  //Falcon C
+    public static int RIGHT_SECONDARY_MOTOR = 7;  //Falcon D
+    public static int PRIMARY_SHOOTER_MOTOR = 18;  //Falcon G
+    public static int SECONDARY_SHOOTER_MOTOR = 19;  //Falcon H
+    public static int HOOD_MOTOR = 17;  //Spark A
+    public static int SHOOTER_TRANSIT = 16;  //Spark 19-A
+    public static int CLIMBER_PRIMARY = 9;  //Talon E
+    public static int CLIMBER_SECONDARY = 8;  //TAlon F
+    public static int PCM = 15;   //PCM
+    public static final int COLLECTOR_TRANSIT_MOTOR = 11;  //Spark-19-C
+    public static final int REVOLVER_MOTOR_ID = 10;  //Spark C2
 
-    //CAN ID for Intake Omni wheels (Spark B)
-    public static int INTAKE_OMNI_WHEEL = 14;
-
-    //CAN ID For Intake Rollers (Talon AK) changed to spark roller in new logical collection*
-    public static int INTAKE_ROLLERS = 12;
-    
-	//CAN ID'S For the Falcons (A,B,C,D) in the Drive Base left are primary*
-    public static int LEFT_PRIMARY_MOTOR = 5;
-    public static int RIGHT_PRIMARY_MOTOR = 6;
-    public static int LEFT_SECONDARY_MOTOR = 4;
-    public static int RIGHT_SECONDARY_MOTOR = 7;
-
-     //CAN ID'S For the two Falcons on shooter (G,H)
-     public static int PRIMARY_SHOOTER_MOTOR = 18;
-     public static int SECONDARY_SHOOTER_MOTOR = 19;
- 
-     //CAN ID For hood Neo 550 (Spark A)
-     public static int HOOD_MOTOR = 17;
-
-     //CAN Shooter Transit  neo 550. spark19-A can 16*
-     public static int SHOOTER_TRANSIT = 16;
-
-     //Can id for the two Climber falcons (Talons E and F)
-     public static int CLIMBER_PRIMARY = 9;
-     public static int CLIMBER_SECONDARY = 8;
-
-     //Can id for pcm
-    public static int PCM = 15;
-
-     //pcm slot of the solenoid on the climber we dont have this anymore
-     //public static int CLIMBER_Solenoid = 1 ;
-
-     //climber wheel(falcon i)
-
-     //Intake Motor Speeds
-    public static double INTAKE_OMNI_MOTOR_SPEED = 0.75;
-    public static double INTAKE_TRANSIT1_SPEED = 0.1;
-
-     //pcm slot of the solenoid on the Intake
+    // PCM slot's 
     public static int INTAKE_solenoid = 0;
-   
+    public static final int INTAKE_FOREWARD_SOLENOID = 1;
+    public static final int INTAKE_REVERSE_SOLENOID = 0;
 
-     //speed for the shooter Transit motor
-     public static double SHOOTER_TRANSIT_SPEED = 0.5;
+    //LED stuff
+    public static final int LED_PORT = 0;
+    public static final int LED_BUFFER_LENGTH = 55; // = the sum of all LED strip lengths on the robot //
 
-     //the variable that you can be wrong for shooter spinny motors
-     public static double SHOOTER_SPIN_ERROR = 1.0;
+    //Sensors
+    public static final int INTAKE_FUEL_CELL_SENSOR = 0;
+    public static final int FUEL_CELL_SENSOR_PORT = 2;
+    public static final int REVOLVER_POSITION_SENSOR = 0;
+
+    // RoboRIO input id for Limit switches
+    public static final int REVOLVER_COLLECTION_POSITION = 0;
+
+    //Motor Constants
+    public static int FALCON_COUNTS_PER_REV = 2048;
+    public static final double NEO550_COUNTS_PER_REV = 1.0; 
+
+    //Speeds
+    public static double SHOOTER_TRANSIT_SPEED = 0.75;
+    public static double INTAKE_OMNI_MOTOR_SPEED = 0.75;
+    public static double INTAKE_TRANSIT1_SPEED = 0.25;
+    public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
+    public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
+    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
+
     
-    //Voltage Limiting for Drive Base
+    
+    //DRIVE BASE
     public static double DRIVE_CURRENT_LIMIT = 40;
     public static double THRESHOLD_CURRENT = 120;
     public static double THRESHOLD_TIMEOUT = 1;
-        
-    //Turn Rate for Curvature Drive
     public static double MINIMUM_TURN_RATE = 0.15;
-    
-    //Drive Base Stuff for InchesToTicksOnMotor
     public static double DRIVE_GEAR_RATIO = 12.7272727;
     public static double DRIVE_WHEEL_CIRCUMFERENCE = 6.125 * Math.PI;
-    public static int FALCON_COUNTS_PER_REV = 2048;
-       
-    //Constants for the Revolver (spark c2)
-    public static final int REVOLVER_MOTOR_ID = 10;
-    public static final double REVOLVER_CURRENT_LIMIT = 40.0;
 
-    // RoboRIO input id for calibration switch
-    public static final int REVOLVER_COLLECTION_POSITION = 0;
-    public static final int REVOLVER_SHOOTER_POSITION = REVOLVER_COLLECTION_POSITION + 2;
-
-
-    //Button import for spinning the revolver
-    
-
-    //Button import for spinning the shooter
-    public static final int SPIN_SHOOTER_SPIN = 3;
-    
-    public static final int NEO550_COUNTS_PER_REV = 42;
-
-    //Gear Ratios for shooter Motors
+          
+    //SHOOTER  
     public static double SHOOTER_MOTOR_GEAR_RATIO = 2.0;
     public static double HOOD_MOTOR_GEAR_RATIO = 300.0;
-
-    //contants for hood angles
     public static double HOOD_MIN = 0.0;
     public static double HOOD_MAX = 80.0;
-
-    //threshold for hood angle
     public static double HOOD_ANGLE_THRESHOLD = 0.5;
-    
-    //constants for Limelight
+    public static double SHOOTER_SPIN_ERROR = 1.0;  // variable you can be wrog for shooter errors
+
+
+    //LIMELIGHT
     public static double LIMELIGHT_HEIGHT = 0.0;
     public static final int LIMELIGHT_ANGLE = 20;
     public static double HEIGHT_OF_TARGET = 96.0;
 
-    //Imports for controllers on Driverstation Laptop
-    public static int STICK = 1;
-    public static int STICK_2 = 2;
-    public static int XBOX = 0;
+    
+    //CLIMBER
+    public static final double CLIMBER_MOTOR_GEAR_RATIO = 33.4;
+    public static double CLIMBER_WHEEL_CIRCUMFERENCE = 3.5325;
+    public static final double CLIMER_THRESHOLD_CURRENT = 120;
+    public static final double CLIMBER_THRESHOLD_TIMEOUT = 0.5;
 
-    //Button Inputs for XBOX Controller
+
+    //REVOLVER
+    public static final double REVOLVER_GEAR_RATIO = (84.0 / 48.0)*100.0;
+    public static final double REVOLVER_THRESHOLD = 1.0;
+    public static final double REVOLVER_CURRENT_LIMIT = 40.0; 
+    public static final int REVOLVER_SHOOTER_POSITION = REVOLVER_COLLECTION_POSITION + 2;
+
+
+
+    //BUTTON INPUTS FOR XBOX CONTROLLER
     public static int XBOX_MOVE = 1;  //axis
     public static int XBOX_TURN = 4;  //axis
     public static int REVERSIT_TRUE = 5;
@@ -132,68 +118,30 @@ public final class Constants {
     public static int CANCEL = 7;
     public static int SPIN_REVOLVER = 1;
 
-    //Button Inputs for Flight Stick Controller
+    //BUTTON INPUTS FOR FLIGHT STICK CONTROLLER
     public static int SHOOT = 1;
     public static int LINE_UP = 2;
     public static int TURN_ON_LIMELIGHT = 5;
     public static int RAISE_LOWER_CLIMBER = 1; //axis
     public static int ON_OFF_CLIMBER = 3;  //slider
-
+    public static int STOP_SHOOTER = 12;
+    public static int HOOD_UP = 8;
+    public static int HOOD_DOWN = 10;
     public static int HIGH_SHOOTER_SPEED = 7;
     public static int MEDIUM_SHOOTER_SPEED = 9;
     public static int LOW_SHOOTER_SPEED = 11;
 
-    public static int STOP_SHOOTER = 12;
-
-    public static int HOOD_UP = 8;
-    public static int HOOD_DOWN = 10;
-
-    //Dead zone for (Xbox) joystick i'mput
-    public static double DEAD_ZONE = 0.15;
-
     //Tan[x] Drive flight sticks
     public static final int LEFT_AXIS = 1;
     public static final int RIGHT_AXIS = 1;
-    
-    //Climber Motor Information
-    public static final double CLIMBER_MOTOR_GEAR_RATIO = 33.4;
-    public static double CLIMBER_WHEEL_CIRCUMFERENCE = 3.5325;
-    public static final double CLIMER_THRESHOLD_CURRENT = 120;
-    public static final double CLIMBER_THRESHOLD_TIMEOUT = 0.5;
+	public static final double SENSOR_TRIGGER_VOLTAGE = 0.9;
 
-    //Revolver Motor Information
-    public static final double REVOLVER_GEAR_RATIO = (84.0 / 48.0)*100.0;
-    public static final int REVOLVER_WHEEL_CIRCUMFERENCE = 1;
+    //Imports for controllers on Driverstation Laptop
+    public static int XBOX = 0;
+    public static int STICK = 1;
+    public static int STICK_2 = 2;
 
-    //revolver analog chanal
-    public static final int FUEL_CELL_SENSOR_PORT = 2;
-    public static final int REVOLVER_POSITION_SENSOR = 0;
-
-	public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
-
-	public static final int COLLECTOR_TRANSIT_MOTOR = 11;
-
-	public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.25;
-
-	public static final double REVOLVER_THRESHOLD = 25;
-
-	public static final int INTAKE_FUEL_CELL_SENSOR = 4;
-
-	public static final int LED_PORT = 0;
-
-	public static final int LED_BUFFER_LENGTH = 55; // = the sum of all LED strip lengths on the robot //
-
-	public static final double REVOLVER_CALIBRATION_SPEED = 3003.0;
-
-	public static final int INTAKE_FOREWARD_SOLENOID = 0;
-
-	public static final int INTAKE_REVERSE_SOLENOID = 1;
-
-
-
-
-
-
-
+    //Dead zone for (Xbox) joystick i'mput
+    public static double DEAD_ZONE = 0.15;
     
 }
