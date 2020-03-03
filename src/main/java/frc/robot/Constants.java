@@ -136,6 +136,7 @@ public final class Constants {
     public static final int LEFT_AXIS = 1;
     public static final int RIGHT_AXIS = 1;
 	public static final double SENSOR_TRIGGER_VOLTAGE = 0.9;
+	public static final int OH_GOD_PLEASE_STOP_DONT_KILL_ME_BUTTON = 8;
 
     //Imports for controllers on Driverstation Laptop
     public static int XBOX = 0;

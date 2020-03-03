@@ -209,6 +209,14 @@ public class Revolver extends SubsystemBase {
 
   }
 
+  public void assumeEmpty(){
+
+    for (int i = 0; i <= 4; i ++ ){
+
+      revolverArray.set(i , 0);
+    }
+
+  }
   public int sumFuelCells() {
 
     int sum = 0;

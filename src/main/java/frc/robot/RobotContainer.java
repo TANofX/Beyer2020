@@ -27,7 +27,7 @@ import frc.robot.commands.JoystickTankDrive;
 import frc.robot.commands.MoveHood;
 import frc.robot.commands.RevolverIntake;
 import frc.robot.commands.RevolverNextPostition;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.RapidFire;
 import frc.robot.subsystems.Drives;
 import frc.robot.subsystems.IndicatorLights;
 import frc.robot.subsystems.Intake;
@@ -77,7 +77,7 @@ public class RobotContainer {
   private final JoystickAxisButton runIntake = new JoystickAxisButton(m_xbox, Constants.RUN_INTAKE);
   private final JoystickAxisButton enableClimber = new JoystickAxisButton(m_stick, Constants.ON_OFF_CLIMBER, true);
   private final JoystickButton cancelAll = new JoystickButton(m_xbox, Constants.CANCEL);
-  //private final JoystickButton superSpeed = new
+  private final JoystickButton ohGodPleaseStopDontKillMe = new JoystickButton(m_xbox, Constants.OH_GOD_PLEASE_STOP_DONT_KILL_ME_BUTTON);
 
 
   // The robot's subsystems and commands are defined here...
@@ -123,7 +123,7 @@ public class RobotContainer {
     spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
     spinStop.whenPressed(()-> m_Shooter.stop());
-    shoot.whenPressed(new Shoot(m_Shooter, m_Revolver, m_Limelight).withTimeout(1.0));
+    shoot.whenPressed(new RapidFire(m_Shooter, m_Revolver, m_Limelight));
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));
     
@@ -136,7 +136,7 @@ public class RobotContainer {
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
     //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
     SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
-    SmartDashboard.putData("next revolver position", new RevolverNextPostition(m_Revolver));
+    SmartDashboard.putData("Count fuel ", new BallCount(m_Revolver));
 
     enableClimber.whenActive(()-> m_Climber.enableClimber(true));
     enableClimber.whenInactive(()-> m_Climber.enableClimber(false));
