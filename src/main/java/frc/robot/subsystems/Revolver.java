@@ -244,7 +244,8 @@ public class Revolver extends SubsystemBase {
     SmartDashboard.putNumber("voltage for fuel cell sensor", fuelCellSensor.getVoltage());
     SmartDashboard.putNumber("Revolver Target Position", targetPosition);
     SmartDashboard.putNumber("Next Empty Postion", nextEmptyPosition());
-    SmartDashboard.putNumber("Revolver Motor Voltage", revolverMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Revolver Motor Bus Voltage", revolverMotor.getBusVoltage());
+    SmartDashboard.putNumber("Revolver Current", revolverMotor.getOutputCurrent());
 
     for (int x = 0; x < 5; x++) {
       SmartDashboard.putBoolean("Fuel Cell " + x, (revolverArray.get(x) == 1));

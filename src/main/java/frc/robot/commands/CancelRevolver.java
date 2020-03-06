@@ -16,16 +16,15 @@ public class CancelRevolver extends CommandBase {
 
   public CancelRevolver(Revolver rev) {
 
-    rev = revolver;
+    revolver = rev;
 
-    addRequirements(rev);
+    addRequirements(revolver);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    revolver.rotateToPosition(revolver.currentPosition() - 1);
     
   }
 
@@ -33,7 +32,7 @@ public class CancelRevolver extends CommandBase {
   @Override
   public void execute() {
 
-    if((revolver.isRotating()) && revolver.positionCheck()){
+    if((revolver.isRotating())){
       revolver.stopRevolver();
       }
 

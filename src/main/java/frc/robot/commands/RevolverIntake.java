@@ -53,7 +53,7 @@ public class RevolverIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    revolver.stopTransit();
+    revolver.stopIntake();
   }
 
   // Returns true when the command should end.

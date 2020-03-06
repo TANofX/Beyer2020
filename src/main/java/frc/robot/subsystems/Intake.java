@@ -112,15 +112,15 @@ AnalogInput fuelCellSensor;
 
   public boolean checkForFuel() {
 
-    return (fuelCellSensor.getVoltage() <= 1.0);
+    return (fuelCellSensor.getVoltage() >= 1.0);
  
   }
 
   @Override
   public void periodic() {
 
-    //SmartDashboard.putBoolean("Intake Fuel Cell", checkForFuel());
-    //SmartDashboard.putNumber("Intake voltage", fuelCellSensor.getVoltage());
+    SmartDashboard.putBoolean("Intake Fuel Cell", checkForFuel());
+    SmartDashboard.putNumber("Intake voltage", fuelCellSensor.getVoltage());
     // This method will be called once per scheduler run
   }
 }
