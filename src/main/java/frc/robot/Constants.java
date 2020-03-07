@@ -18,6 +18,7 @@ package frc.robot;
 public final class Constants {
 
     //CAN ID's
+    public static int PIGEON_IMU = 2; //Pigeon IMU
     public static int INTAKE_TRANSIT = 13;  //Spark D
     public static int INTAKE_OMNI_WHEEL = 14;  //Spark B
     public static int INTAKE_ROLLERS = 12;  //Spark Roller

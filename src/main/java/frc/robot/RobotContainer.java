@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -97,11 +98,12 @@ public class RobotContainer {
   private final Revolver m_Revolver = new Revolver();
   private final Intake m_Intake = new Intake();
   private final Limelight m_Limelight = new Limelight();
+  private final SendableChooser<Command> m_Chooser = new SendableChooser<Command>();
  // private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
   private final Climber m_Climber = new Climber();
   private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
-  private final IndicatorLights m_Direction = new IndicatorLights(10, m_Drives);
-
+ 
+  private final IndicatorLights m_Direction = new IndicatorLights(5, m_Drives);
   private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver);
   private final IndicatorLights m_Aim = new IndicatorLights(10, m_Limelight);
   private final IndicatorLights m_Direction2 = new IndicatorLights(10, m_Drives);
@@ -136,6 +138,18 @@ public class RobotContainer {
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));
     
+    m_Chooser.setDefaultOption("Drive Forward", new CalibrateRevolver(m_Revolver)
+    .alongWith(new CalibrateShooter(m_Shooter))
+    .andThen(new BallCount(m_Revolver)
+    .andThen(new DriveForward(m_Drives, 40))));
+
+    m_Chooser.addOption("Shoot and then Drive Forward", new CalibrateRevolver(m_Revolver)
+      .alongWith(new CalibrateShooter(m_Shooter))
+      .andThen(new BallCount(m_Revolver)
+      .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
+      .andThen(new DriveForward(m_Drives, 40)))));
+    SmartDashboard.putData("Auto Options", m_Chooser);
+
     extake.whileActiveContinuous(new Extake(m_Intake));
     runIntake.whileActiveContinuous(new frc.robot.commands.IntakeCommand(m_Intake, m_Revolver).alongWith(new RevolverIntake(m_Revolver)));
     intakeUp.whenPressed(()-> m_Intake.moveRollerUp());
@@ -166,8 +180,7 @@ public class RobotContainer {
    */
  public Command getAutonomousCommand() {
 
-  return new DriveForward(m_Drives);
-
+    return m_Chooser.getSelected();
  }
   // An ExampleCommand will run in autonomous
   }
