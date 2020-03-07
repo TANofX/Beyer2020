@@ -54,6 +54,7 @@ public class RevolverIntake extends CommandBase {
   public void end(boolean interrupted) {
 
     revolver.stopIntake();
+    revolver.stopTransit();
   }
 
   // Returns true when the command should end.

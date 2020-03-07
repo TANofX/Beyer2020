@@ -70,7 +70,11 @@ public class Shooter extends SubsystemBase {
     hoodController.setP(0.000125, 0);
     hoodController.setI(0.000001, 0);
     hoodController.setFF(0.000056, 0);
+    hoodController.setSmartMotionMaxVelocity(9000.0, 0);
+    hoodController.setSmartMotionMinOutputVelocity(0.0, 0);
+    hoodController.setSmartMotionMaxAccel(15000.0, 0);
     hoodController.setSmartMotionAllowedClosedLoopError(0.25, 0);
+    hoodController.setOutputRange(-1.0, 1.0);
     
 
     secondaryShooterTalonFX.follow(primaryShooterTalonFX);
@@ -241,6 +245,8 @@ public boolean atSpeed() {
     SmartDashboard.putNumber("Target Shooter Speed", targetShooterSpeed.getMotorSpeed());
     SmartDashboard.putNumber("Hood Angle", getAngle());
     SmartDashboard.putNumber("Primary Shooter Motor Speed", primaryShooterTalonFX.getMotorOutputPercent());
+    SmartDashboard.putNumber("Target Hood Position", this.targetHoodPosition);
+    SmartDashboard.putNumber("Hood Position", hoodEncoder.getPosition());
   }
 }
 

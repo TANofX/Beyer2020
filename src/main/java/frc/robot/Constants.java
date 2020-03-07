@@ -78,8 +78,8 @@ public final class Constants {
     //SHOOTER  
     public static double SHOOTER_MOTOR_GEAR_RATIO = 2.0;
     public static double HOOD_MOTOR_GEAR_RATIO = 300.0;
-    public static double HOOD_MIN = 0.0;
-    public static double HOOD_MAX = 80.0;
+    public static double HOOD_MIN = -80.0;
+    public static double HOOD_MAX = 0.0;
     public static double HOOD_ANGLE_THRESHOLD = 0.5;
     public static double SHOOTER_SPIN_ERROR = 1.0;  // variable you can be wrog for shooter errors
 
@@ -124,12 +124,17 @@ public final class Constants {
     public static int RAISE_LOWER_CLIMBER = 1; //axis
     public static int ON_OFF_CLIMBER = 3;  //slider
     public static int STOP_SHOOTER = 12;
-    public static int HOOD_UP = 8;
-    public static int HOOD_DOWN = 10;
-    public static int HIGH_SHOOTER_SPEED = 7;
-    public static int MEDIUM_SHOOTER_SPEED = 9;
-    public static int LOW_SHOOTER_SPEED = 11;
+    public static int HIGH_SHOOTER_SPEED = 8;
+  //  public static int MEDIUM_SHOOTER_SPEED = 9;
+    public static int LOW_SHOOTER_SPEED = 10;
     public static int SUPER_SHOOTER_SPEED = 6;
+    public static int CLOSE_GOAL = 7;
+    public static int MEDIUM_GOAL =9;
+    public static int FAR_GOAL = 11;
+
+    //FLIGHT STICK POV BUTTON
+    public static int HOOD_UP = 0;
+    public static int HOOD_DOWN = 180;
 
     //Tan[x] Drive flight sticks
     public static final int LEFT_AXIS = 1;

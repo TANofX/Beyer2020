@@ -7,52 +7,52 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Revolver;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSpeeds;
 
-
-public class CalibrateRevolver extends CommandBase {
+public class ShooterPreset extends CommandBase {
   /**
-   * Creates a new CalibrateRevolver.
+   * Creates a new ShooterPreset.
    */
-  private Revolver revolver;
+  private Shooter shooter;
+  private ShooterSpeeds shooterSpeeds;
+  private double shooterHoodAngle;
 
-  public CalibrateRevolver(Revolver revolver) {
-    // Use addequirements() here to declare subsystem dependencies.
-    this.revolver = revolver;
-
-    addRequirements(revolver);
-
+  public ShooterPreset(Shooter shoot, ShooterSpeeds speed, double hoodAngle) {
+    shooter = shoot;
+    shooterSpeeds = speed;
+    shooterHoodAngle = hoodAngle;
+    
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    revolver.spinRevolver();
+    shooter.spinPrimaryMotor(shooterSpeeds);
+    shooter.moveHood(shooterHoodAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    revolver.stopRevolver();
-    revolver.stopTransit();
-    revolver.calibrateRevolver();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    return revolver.inCalibratePosition();
-    
-  }
-  
+
+    if (shooter.atSpeed()&& (shooter.hoodInPosition())) {
+      return true;
+    }
+    else 
+    return false;
+    }
 }
