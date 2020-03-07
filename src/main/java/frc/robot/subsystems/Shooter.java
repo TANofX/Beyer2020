@@ -111,6 +111,11 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  public boolean hoodOnLimit()
+  {
+    return hoodMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyClosed).get();
+  }
+
   public void SpinShooterSpin() {
 
     primaryShooterTalonFX.set(ControlMode.PercentOutput, 1.0);

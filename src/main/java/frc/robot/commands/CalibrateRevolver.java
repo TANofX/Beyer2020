@@ -42,13 +42,15 @@ public class CalibrateRevolver extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    revolver.stopRevolver();
+    revolver.calibrateRevolver();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     
-    return revolver.calibrateRevolver();
+    return revolver.inCalibratePosition();
     
   }
   

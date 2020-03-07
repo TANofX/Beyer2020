@@ -42,6 +42,11 @@ public class BallCount extends CommandBase  {
 
     }
 
+    if (timesRun < 4) {
+
+      revolver.stopIntake();
+
+    }
   }
 
 

@@ -34,6 +34,7 @@ public class Revolver extends SubsystemBase {
   private AnalogInput fuelCellSensor;
   private DigitalInput revolverPositionSensor;
   private CircularArrayList<Integer> revolverArray; 
+  private CANPIDController collectorController;
   private boolean runtransit = false;
 
   private double targetPosition = 0.0;
@@ -47,9 +48,10 @@ public class Revolver extends SubsystemBase {
   public Revolver() {
     revolverMotor = new CANSparkMax(Constants.REVOLVER_MOTOR_ID, MotorType.kBrushless);
     collectorTransit = new CANSparkMax(Constants.COLLECTOR_TRANSIT_MOTOR, MotorType.kBrushless);
+    collectorController = collectorTransit.getPIDController();
     revolverController = revolverMotor.getPIDController();
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
-    revolverMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    revolverMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
     revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
     revolverArray = new CircularArrayList<Integer>(5);
@@ -58,7 +60,7 @@ public class Revolver extends SubsystemBase {
       revolverArray.add(i, 0);
 
     }
-    revolverMotor.setSmartCurrentLimit(10, 11000);   //.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Constants.DRIVE_CURRENT_LIMIT, Constants.THRESHOLD_CURRENT, Constants.THRESHOLD_TIMEOUT));
+    revolverMotor.setSmartCurrentLimit(10, 11000);
     revolverController.setP(0.000001);
     revolverController.setI(0.000000004);
     revolverController.setD(0.0);
@@ -68,6 +70,17 @@ public class Revolver extends SubsystemBase {
     revolverController.setSmartMotionMaxAccel(15000.0, 0);
     revolverController.setSmartMotionAllowedClosedLoopError(0.0, 0);
     revolverController.setOutputRange(0.0, 1.0);
+
+    collectorController.setP(0.00000125);
+    collectorController.setI(0.00000025);
+    collectorController.setD(0.0);
+    collectorController.setFF(0.0);
+    collectorController.setSmartMotionMaxVelocity(4200.0, 0);
+    collectorController.setSmartMotionMinOutputVelocity(0.0, 0);
+    collectorController.setSmartMotionMaxAccel(15000.0, 0);
+    collectorController.setSmartMotionAllowedClosedLoopError(0.0, 0);
+    collectorController.setOutputRange(-1.0, 1.0);
+
   }
 
   public void spinRevolver() {
@@ -79,7 +92,7 @@ public class Revolver extends SubsystemBase {
   public void runTransit(){
 
     runtransit = true;
-    collectorTransit.set(Constants.COLLECTOR_TRANSIT_MOTOR_SPEED);
+    collectorController.setReference(Constants.COLLECTOR_TRANSIT_MOTOR_SPEED, ControlType.kVelocity);
   }
 
   public void stopTransit() {
@@ -128,7 +141,7 @@ public class Revolver extends SubsystemBase {
      position = position % 5;
     }
 
-    collectorTransit.set(Constants.COLLECTOR_TRANSIT_MOTOR_SPEED);
+    runTransit();
 
     int Revolution = currentRevolution();
     if(position < currentPosition()) Revolution++;
@@ -153,22 +166,13 @@ public class Revolver extends SubsystemBase {
     return 0;
   }
 
-  public boolean calibrateRevolver() {
+  public boolean inCalibratePosition() {
+    return revolverPositionSensor.get();
+  }
 
-
-
-      if (revolverPositionSensor.get()) {
-
-        stopRevolver();
-        stopTransit();
+  public void calibrateRevolver() {
         revolverEncoder.setPosition(0.0);
-
-        return true;
-
-      }
-    
-      else return false;
-
+        targetPosition = 0;
   }
 
   public boolean checkForFuel() {
@@ -205,7 +209,7 @@ public class Revolver extends SubsystemBase {
 
   public void shootFuelCell(){
 
-    revolverArray.set(this.currentPosition() + 2, 0);
+    revolverArray.set(this.currentPosition() + 3, 0);
 
   }
 
@@ -237,7 +241,7 @@ public class Revolver extends SubsystemBase {
     SmartDashboard.putNumber("Revolver Position", revolverEncoder.getPosition());
     SmartDashboard.putBoolean("Fuel Cell Sensor", checkForFuel());
     SmartDashboard.putNumber("Number of Fuel Cell", sumFuelCells());
-    SmartDashboard.putBoolean("Revoler Calibrate", revolverPositionSensor.get());
+    SmartDashboard.putBoolean("Revoler Position Sensor", revolverPositionSensor.get());
     SmartDashboard.putNumber("Counts per Revolution", revolverEncoder.getCountsPerRevolution());
     SmartDashboard.putNumber("Position Conversion Factor", revolverEncoder.getPositionConversionFactor());
     SmartDashboard.putNumber("fuel cell slot", currentPosition());
@@ -246,10 +250,5 @@ public class Revolver extends SubsystemBase {
     SmartDashboard.putNumber("Next Empty Postion", nextEmptyPosition());
     SmartDashboard.putNumber("Revolver Motor Bus Voltage", revolverMotor.getBusVoltage());
     SmartDashboard.putNumber("Revolver Current", revolverMotor.getOutputCurrent());
-
-    for (int x = 0; x < 5; x++) {
-      SmartDashboard.putBoolean("Fuel Cell " + x, (revolverArray.get(x) == 1));
-    }
-
   }
 }

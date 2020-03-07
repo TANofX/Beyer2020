@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.lang.annotation.Retention;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Revolver;
@@ -21,7 +22,6 @@ public class RapidFire extends CommandBase {
   private int mightBeFinished = 0;
   private int slotTracker = 0;
   private int finalSlot = 4;// Because Noah wanted it to be 4.
-  private boolean firstLoop = true;
   /**
    * Creates a new Shoot.
    */
@@ -39,22 +39,20 @@ public class RapidFire extends CommandBase {
   @Override
   public void initialize() {
 
-    firstLoop = true;
+    shooter.shoot();
+    slotTracker = revolver.currentPosition();
+    finalSlot = slotTracker + 4;
+    mightBeFinished = 0;
     
     }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-      if (firstLoop){
-
-        shooter.shoot();
-        slotTracker = revolver.currentPosition();
-        finalSlot = slotTracker + 4;
-        firstLoop = false;
-
-      }
+    SmartDashboard.putNumber("Rapidfire Slot", slotTracker);
+    SmartDashboard.putNumber("Rapidfire Final Slot", finalSlot);
+    SmartDashboard.putNumber("Rapidfire Might Be Finished", mightBeFinished);
+      
 
       if (revolver.positionCheck() &&(slotTracker < finalSlot)){
 
@@ -69,7 +67,6 @@ public class RapidFire extends CommandBase {
 
     shooter.stopShoot();
     revolver.assumeEmpty();
-    firstLoop = true;
 
   }
 
@@ -80,6 +77,6 @@ public class RapidFire extends CommandBase {
     if (revolver.positionCheck() &&(slotTracker == finalSlot)){
      mightBeFinished++;
     }
-    return mightBeFinished > 20;
+    return mightBeFinished > 21;
   }
 }

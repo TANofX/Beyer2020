@@ -58,11 +58,11 @@ public final class Constants {
 
     //Speeds
     public static double SHOOTER_TRANSIT_SPEED = 0.75;
-    public static double INTAKE_OMNI_MOTOR_SPEED = 0.5; //changed from 0.75
-    public static double INTAKE_TRANSIT1_SPEED = 0.15; //0.05
+    public static double INTAKE_OMNI_MOTOR_SPEED = 4000; //changed from 0.75
+    public static double INTAKE_TRANSIT1_SPEED = 2000; //0.05
     public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
     public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
-    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 0.15;// was .25
+    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 3000;// was .25
 
     
     
@@ -108,11 +108,10 @@ public final class Constants {
     //BUTTON INPUTS FOR XBOX CONTROLLER
     public static int XBOX_MOVE = 1;  //axis
     public static int XBOX_TURN = 4;  //axis
-    public static int REVERSIT_TRUE = 5;
-    public static int REVERSEIT_FALSE = 6;
+    public static int REVERSIT_TOGGLE = 5;
     public static int UP_INTAKE = 4;
     public static int DOWN_INTAKE = 3;
-    public static int EXTAKE = 2;
+    public static int EXTAKE = 6;
     public static int RUN_INTAKE = 3; //Trigger
     public static int SLOW_DOWN = 2;  //Trigger
     public static int CANCEL = 7;

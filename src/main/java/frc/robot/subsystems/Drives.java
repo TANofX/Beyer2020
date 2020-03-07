@@ -101,6 +101,8 @@ public class Drives extends SubsystemBase {
 
   }
 
+
+
   //Conversion so we can actually do Automonous Code
   private double inchesToEncoderCounts(double inches) {
 
@@ -116,6 +118,24 @@ public class Drives extends SubsystemBase {
     double leftTargetCounts = leftPrimaryTalonFX.getSelectedSensorPosition() - requiredCounts;
     rightPrimaryTalonFX.set(ControlMode.MotionMagic, rightTargetCounts);
     leftPrimaryTalonFX.set(ControlMode.MotionMagic, leftTargetCounts);
+
+  }
+
+  public double inchesMoved() {
+
+    return (rightPrimaryTalonFX.getSelectedSensorPosition() * Constants.DRIVE_WHEEL_CIRCUMFERENCE) / (Constants.DRIVE_GEAR_RATIO * Constants.FALCON_COUNTS_PER_REV);
+    
+    }
+  
+  public boolean isMoveXInchesFinished(double requiredInches) {
+
+  if(Math.abs(requiredInches - inchesMoved()) <= 1.0) {
+
+    return true;
+
+  }
+
+  return false;
 
   }
 
