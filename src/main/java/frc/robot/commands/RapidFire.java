@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSpeeds;
 
 public class RapidFire extends CommandBase {
   private Shooter shooter;
@@ -64,6 +65,8 @@ public class RapidFire extends CommandBase {
     shooter.stopShoot();
     revolver.assumeEmpty();
     shooter.moveHood(0.0);
+    revolver.stopTransit();
+    shooter.spinPrimaryMotor(ShooterSpeeds.OFF);
 
   }
 
@@ -74,6 +77,6 @@ public class RapidFire extends CommandBase {
     if (revolver.positionCheck() &&(slotTracker == finalSlot)){
      mightBeFinished++;
     }
-    return mightBeFinished > 21;
+    return mightBeFinished > 25;
   }
 }

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BallCount;
@@ -31,6 +32,7 @@ import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
 import frc.robot.commands.MoveHood;
 import frc.robot.commands.RevolverNextPostition;
+import frc.robot.commands.ShooterPreset;
 import frc.robot.commands.ToggleReverse;
 import frc.robot.commands.RapidFire;
 import frc.robot.commands.RevolverIntake;
@@ -42,6 +44,8 @@ import frc.robot.subsystems.PCMSubsystem;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSpeeds;
+import frc.robot.subsystems.Limelight.CamMode;
+import frc.robot.subsystems.Limelight.LEDMode;
 import frc.robot.utils.JoystickAxisButton;
 import frc.robot.subsystems.Climber;
 
@@ -65,11 +69,11 @@ public class RobotContainer {
 
   //private final JoystickButton spinRevolver = new JoystickButton(m_stick, Constants.SPIN_REVOLVER);
   private final JoystickButton spinHigh = new JoystickButton(m_stick, Constants.HIGH_SHOOTER_SPEED);
-  private final JoystickButton spinMedium = new JoystickButton(m_stick, Constants.MEDIUM_SHOOTER_SPEED);
+  //private final JoystickButton spinMedium = new JoystickButton(m_stick, Constants.MEDIUM_SHOOTER_SPEED);
   private final JoystickButton spinLow = new JoystickButton(m_stick, Constants.LOW_SHOOTER_SPEED);
   private final JoystickButton spinStop = new JoystickButton(m_stick, Constants.STOP_SHOOTER);
-  private final JoystickButton hoodUp = new JoystickButton(m_stick, Constants.HOOD_UP);
-  private final JoystickButton hoodDown = new JoystickButton(m_stick, Constants.HOOD_DOWN);
+  private final POVButton hoodUp = new POVButton(m_stick, Constants.HOOD_UP);
+  private final POVButton hoodDown = new POVButton(m_stick, Constants.HOOD_DOWN);
   private final JoystickButton shoot = new JoystickButton(m_stick, Constants.SHOOT);
   private final JoystickButton spinRevolver = new JoystickButton(m_xbox, Constants.SPIN_REVOLVER);
   private final JoystickButton extake = new JoystickButton(m_xbox, Constants.EXTAKE);
@@ -84,6 +88,11 @@ public class RobotContainer {
   private final JoystickButton cancelAll = new JoystickButton(m_xbox, Constants.CANCEL);
   private final JoystickButton ohGodPleaseStopDontKillMe = new JoystickButton(m_xbox, Constants.OH_GOD_PLEASE_STOP_DONT_KILL_ME_BUTTON);
   private final JoystickButton calibrateRevolver = new JoystickButton(m_xbox, Constants.XBOX_MOVE);
+  private final JoystickButton closeGoal = new JoystickButton(m_stick, Constants.CLOSE_GOAL);
+  private final JoystickButton tenFootGoal = new JoystickButton(m_stick, Constants.MEDIUM_GOAL);
+  private final JoystickButton trenchGoal = new JoystickButton(m_stick, Constants.FAR_GOAL);
+
+  
 //kill revolver (sends revolver back to last slot)
 
   // The robot's subsystems and commands are defined here...
@@ -102,7 +111,7 @@ public class RobotContainer {
  // private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
   private final Climber m_Climber = new Climber();
   private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
- 
+
   private final IndicatorLights m_Direction = new IndicatorLights(5, m_Drives);
   private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver);
   private final IndicatorLights m_Aim = new IndicatorLights(10, m_Limelight);
@@ -115,7 +124,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-  
+    m_Limelight.setLEDMode(LEDMode.OFF);
+    m_Limelight.setCameraMode(CamMode.DRIVER);
   }
 
   /**
@@ -126,12 +136,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
     //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
     m_ReverseToggle.toggleWhenPressed(new ToggleReverse(m_Drives));
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
     
     spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
-    spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
+    //spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
     spinStop.whenPressed(()-> m_Shooter.stop());
     shoot.whenPressed(new RapidFire(m_Shooter, m_Revolver, m_Limelight));
@@ -159,7 +170,6 @@ public class RobotContainer {
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
   
     ohGodPleaseStopDontKillMe.whileHeld(new CancelRevolver(m_Revolver));
-    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
     SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
     calibrateRevolver.whenPressed(new CalibrateRevolver(m_Revolver).alongWith(new CalibrateShooter(m_Shooter)).andThen(new BallCount(m_Revolver)));
     SmartDashboard.putData("Count fuel ", new BallCount(m_Revolver));
@@ -170,7 +180,12 @@ public class RobotContainer {
     enableClimber.whenInactive(()-> m_Climber.enableClimber(false));
     cancel.whenPressed(new CancelAll(m_Revolver, m_Intake, m_Shooter, m_Climber));
     CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
+
+    closeGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5));
+    tenFootGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -38));
+    trenchGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -55));
     
+    //lineUP.whileHeld(new FollowTarget(m_Limelight, m_Drives, spinKp, spinKi, spinMin, driveKp, driveKi, driveMin, targetWidth, allowedAngle, allowedDistance));
   }
 
   /**
