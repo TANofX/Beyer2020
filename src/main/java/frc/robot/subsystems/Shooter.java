@@ -67,9 +67,10 @@ public class Shooter extends SubsystemBase {
 
     configureTalon(primaryShooterTalonFX);
     configureTalon(secondaryShooterTalonFX);
-    hoodController.setP(0.0125, 0);
-    hoodController.setI(0.00125, 0);
-
+    hoodController.setP(0.000125, 0);
+    hoodController.setI(0.000001, 0);
+    hoodController.setFF(0.000056, 0);
+    hoodController.setSmartMotionAllowedClosedLoopError(0.25, 0);
     
 
     secondaryShooterTalonFX.follow(primaryShooterTalonFX);
@@ -145,6 +146,11 @@ public class Shooter extends SubsystemBase {
 
     return true;
   }
+
+public void calibrateHood() {
+  hoodEncoder.setPosition(0);
+  targetHoodPosition = 0.0;
+}
 
   public void hoodUp() {
 

@@ -17,6 +17,7 @@ public class CalibrateShooter extends CommandBase {
 
 
   public CalibrateShooter(Shooter hood) {
+    shooter = hood;
     addRequirements(shooter);
   }
 
@@ -35,7 +36,8 @@ public class CalibrateShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShoot();
+    shooter.hoodStop();
+    shooter.calibrateHood();
   }
 
   // Returns true when the command should end.

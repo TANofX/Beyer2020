@@ -49,10 +49,6 @@ public class RapidFire extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Rapidfire Slot", slotTracker);
-    SmartDashboard.putNumber("Rapidfire Final Slot", finalSlot);
-    SmartDashboard.putNumber("Rapidfire Might Be Finished", mightBeFinished);
-      
 
       if (revolver.positionCheck() &&(slotTracker < finalSlot)){
 
@@ -67,6 +63,7 @@ public class RapidFire extends CommandBase {
 
     shooter.stopShoot();
     revolver.assumeEmpty();
+    shooter.moveHood(0.0);
 
   }
 

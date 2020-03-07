@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BallCount;
 import frc.robot.commands.CalibrateRevolver;
+import frc.robot.commands.CalibrateShooter;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.CancelRevolver;
 import frc.robot.commands.ClimberJoystick;
@@ -146,8 +147,9 @@ public class RobotContainer {
     ohGodPleaseStopDontKillMe.whileHeld(new CancelRevolver(m_Revolver));
     //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
     SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
-    calibrateRevolver.whenPressed(new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
+    calibrateRevolver.whenPressed(new CalibrateRevolver(m_Revolver).alongWith(new CalibrateShooter(m_Shooter)).andThen(new BallCount(m_Revolver)));
     SmartDashboard.putData("Count fuel ", new BallCount(m_Revolver));
+    SmartDashboard.putData("Calibrate hood", new CalibrateShooter(m_Shooter));
 
     
     enableClimber.whenActive(()-> m_Climber.enableClimber(true));
