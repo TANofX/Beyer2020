@@ -30,6 +30,7 @@ import frc.robot.commands.Extake;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
+import frc.robot.commands.LowerIntake;
 import frc.robot.commands.MoveHood;
 import frc.robot.commands.RevolverNextPostition;
 import frc.robot.commands.ShooterPreset;
@@ -149,16 +150,18 @@ public class RobotContainer {
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));
     
-    m_Chooser.setDefaultOption("Drive Forward", new CalibrateRevolver(m_Revolver)
-    .alongWith(new CalibrateShooter(m_Shooter))
-    .andThen(new BallCount(m_Revolver)
-    .andThen(new DriveForward(m_Drives, 40))));
-
-    m_Chooser.addOption("Shoot and then Drive Forward", new CalibrateRevolver(m_Revolver)
+    m_Chooser.setDefaultOption("Drive Forward", new LowerIntake(m_Intake)
+       .andThen(new DriveForward(m_Drives, 40))
+       .andThen(new CalibrateRevolver(m_Revolver))
+       .alongWith(new CalibrateShooter(m_Shooter))
+       .andThen(new BallCount(m_Revolver)));
+   
+    m_Chooser.addOption("Shoot and then Drive Forward", new LowerIntake(m_Intake)
+      .andThen(new CalibrateRevolver(m_Revolver))
       .alongWith(new CalibrateShooter(m_Shooter))
-      .andThen(new BallCount(m_Revolver)
+      .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -39.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
-      .andThen(new DriveForward(m_Drives, 40)))));
+      .andThen(new DriveForward(m_Drives, 40))));
     SmartDashboard.putData("Auto Options", m_Chooser);
 
     extake.whileActiveContinuous(new Extake(m_Intake));

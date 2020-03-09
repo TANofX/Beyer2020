@@ -82,7 +82,7 @@ public final class Constants {
     public static double HOOD_MIN = -80.0;
     public static double HOOD_MAX = 0.0;
     public static double HOOD_ANGLE_THRESHOLD = 0.5;
-    public static double SHOOTER_SPIN_ERROR = 1.0;  // variable you can be wrog for shooter errors
+    public static double SHOOTER_SPIN_ERROR = 100.0;  // variable you can be wrog for shooter errors
 
 
     //LIMELIGHT
