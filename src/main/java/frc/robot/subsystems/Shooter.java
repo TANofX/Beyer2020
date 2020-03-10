@@ -89,14 +89,14 @@ public class Shooter extends SubsystemBase {
 
     talon.selectProfileSlot(0,0);
 
-    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
-    talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
+    //talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 0);
+   // talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 0);
 
     talon.configMotionCruiseVelocity(20600, 0);
     talon.configMotionAcceleration(5000, 0);
     talon.config_kF(0, 0.05, 0); //talon.config_kF(0, 0.0496, 0);
     talon.config_kP(0, 0.5, 0); //talon.config_kP(0, 0.05, 0);
-    talon.config_kI(0, 0.00000, 0); //talon.config_kI(0, 0.0, 0);
+    talon.config_kI(0, 0.00001, 0); //talon.config_kI(0, 0.0, 0);
 
     talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
 
@@ -215,13 +215,15 @@ public void calibrateHood() {
   }
 
 public void spinPrimaryMotor(ShooterSpeeds Speed) {
-
+  secondaryShooterTalonFX.follow(primaryShooterTalonFX);
   primaryShooterTalonFX.set(ControlMode.Velocity, Speed.getMotorSpeed());
   targetShooterSpeed = Speed;
 
 }  
 
 public boolean atSpeed() {
+  if (targetShooterSpeed == ShooterSpeeds.OFF) 
+    return false;
 
   if (Math.abs(targetShooterSpeed.getMotorSpeed() - getprimaryShooterSpeed()) < Constants.SHOOTER_SPIN_ERROR){
     return true;

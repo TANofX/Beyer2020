@@ -19,15 +19,19 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AimCommand;
 import frc.robot.commands.BallCount;
 import frc.robot.commands.CalibrateRevolver;
 import frc.robot.commands.CalibrateShooter;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.CancelRevolver;
 import frc.robot.commands.ClimberJoystick;
+import frc.robot.commands.DisableLimelight;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.EnableLimelight;
 import frc.robot.commands.Extake;
 import frc.robot.commands.FollowTarget;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoystickCurvatureDrive;
 import frc.robot.commands.JoystickTankDrive;
 import frc.robot.commands.LowerIntake;
@@ -92,7 +96,7 @@ public class RobotContainer {
   private final JoystickButton closeGoal = new JoystickButton(m_stick, Constants.CLOSE_GOAL);
   private final JoystickButton tenFootGoal = new JoystickButton(m_stick, Constants.MEDIUM_GOAL);
   private final JoystickButton trenchGoal = new JoystickButton(m_stick, Constants.FAR_GOAL);
-
+  private final JoystickButton revolverBack = new JoystickButton(m_xbox, Constants.REVOLVER_BACK);
   
 //kill revolver (sends revolver back to last slot)
 
@@ -126,7 +130,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     m_Limelight.setLEDMode(LEDMode.OFF);
-    m_Limelight.setCameraMode(CamMode.DRIVER);
+    m_Limelight.setCameraMode(CamMode.VISION);
   }
 
   /**
@@ -141,7 +145,11 @@ public class RobotContainer {
     //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
     m_ReverseToggle.toggleWhenPressed(new ToggleReverse(m_Drives));
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
-    
+
+    lineUP.whileHeld(new EnableLimelight(m_Limelight)
+      .andThen(new AimCommand(m_Limelight, m_Drives))
+      .andThen(new DisableLimelight(m_Limelight)));
+  
     spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
     //spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
@@ -162,7 +170,32 @@ public class RobotContainer {
       .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -39.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
       .andThen(new DriveForward(m_Drives, 40))));
+/*
+    m_Chooser.addOption("collect 3 then shoot", new LowerIntake(m_Intake)
+      .andThen(new CalibrateRevolver(m_Revolver))
+      .alongWith(new CalibrateShooter(m_Shooter))
+      .andThen(new DriveForward(m_Drives, -180).deadlineWith(new IntakeCommand(m_Intake, m_Revolver)))
+      .andThen(new AimCommand(m_Limelight, m_Drives))
+      .alongWith(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -43.0))
+      .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight))
+      .andThen(new DriveForward(m_Drives, 280)));
+*/
+    m_Chooser.addOption("Close Shot", new LowerIntake(m_Intake)
+    .andThen(new CalibrateRevolver(m_Revolver))
+    .alongWith(new CalibrateShooter(m_Shooter))
+    .andThen(new DriveForward(m_Drives, 120))
+    .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5))
+    .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)));
+
+    // m_Chooser.addOption("Enemy Trench Run (Start W/ 0)", new LowerIntake(m_Intake)
+    // .andThen(new CalibrateRevolver(m_Revolver))
+    // .alongWith(new CalibrateShooter(m_Shooter))
+    // .andThen(new DriveForward(m_Drives, -180).deadlineWith(new IntakeCommand(m_Intake, m_Revolver)))
+    // .andThen
+    // );
+
     SmartDashboard.putData("Auto Options", m_Chooser);
+
 
     extake.whileActiveContinuous(new Extake(m_Intake));
     runIntake.whileActiveContinuous(new frc.robot.commands.IntakeCommand(m_Intake, m_Revolver).alongWith(new RevolverIntake(m_Revolver)));
@@ -171,7 +204,8 @@ public class RobotContainer {
     
     spinRevolver.whenPressed(()-> m_Revolver.spinRevolver());
     revolverNextPosition.whenPressed(()-> m_Revolver.rotateToPosition(1));
-  
+    revolverBack.whenPressed(() -> m_Revolver.backUpRevolver());
+
     ohGodPleaseStopDontKillMe.whileHeld(new CancelRevolver(m_Revolver));
     SmartDashboard.putData("calibrate revolver", new CalibrateRevolver(m_Revolver).andThen(new BallCount(m_Revolver)));
     calibrateRevolver.whenPressed(new CalibrateRevolver(m_Revolver).alongWith(new CalibrateShooter(m_Shooter)).andThen(new BallCount(m_Revolver)));
@@ -185,8 +219,8 @@ public class RobotContainer {
     CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
 
     closeGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5));
-    tenFootGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -38));
-    trenchGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -55));
+    tenFootGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -43));
+    trenchGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -43));
     
     //lineUP.whileHeld(new FollowTarget(m_Limelight, m_Drives, spinKp, spinKi, spinMin, driveKp, driveKi, driveMin, targetWidth, allowedAngle, allowedDistance));
   }

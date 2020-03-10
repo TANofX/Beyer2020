@@ -202,7 +202,11 @@ public class Drives extends SubsystemBase {
 
   }
 
-  
+  public void aim(double speed) {
+    //speed = speed * 50;
+    leftPrimaryTalonFX.set(ControlMode.Velocity, speed);
+    rightPrimaryTalonFX.set(ControlMode.Velocity, speed);
+  }
 
   //This is the method that flips the driving
   public void reverseIt(boolean reversed) {

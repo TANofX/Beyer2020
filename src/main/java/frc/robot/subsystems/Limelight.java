@@ -193,7 +193,7 @@ public class Limelight implements Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Target Distance", distanceToTarget());
-
+    SmartDashboard.putNumber("Limelight Target Distance", distanceToTarget());
+    SmartDashboard.putNumber("Limelight Target Offset", getOffset());
   }
 }

@@ -60,7 +60,7 @@ public final class Constants {
     //Speeds
     public static double SHOOTER_TRANSIT_SPEED = 0.75;
     public static double INTAKE_OMNI_MOTOR_SPEED = 4000; //changed from 0.75
-    public static double INTAKE_TRANSIT1_SPEED = 2000; //0.05
+    public static double INTAKE_TRANSIT1_SPEED = 2500; //0.05
     public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
     public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
     public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 2500;// was .25
@@ -82,7 +82,7 @@ public final class Constants {
     public static double HOOD_MIN = -80.0;
     public static double HOOD_MAX = 0.0;
     public static double HOOD_ANGLE_THRESHOLD = 0.5;
-    public static double SHOOTER_SPIN_ERROR = 100.0;  // variable you can be wrog for shooter errors
+    public static double SHOOTER_SPIN_ERROR = 500.0;  // variable you can be wrog for shooter errors
 
 
     //LIMELIGHT
@@ -117,6 +117,7 @@ public final class Constants {
     public static int SLOW_DOWN = 2;  //Trigger
     public static int CANCEL = 7;
     public static int SPIN_REVOLVER = 1;
+    public static final int REVOLVER_BACK = 2;
 
     //BUTTON INPUTS FOR FLIGHT STICK CONTROLLER
     public static int SHOOT = 1;
@@ -142,6 +143,7 @@ public final class Constants {
     public static final int RIGHT_AXIS = 1;
 	public static final double SENSOR_TRIGGER_VOLTAGE = 0.9;
 	public static final int OH_GOD_PLEASE_STOP_DONT_KILL_ME_BUTTON = 8;
+
 
     //Imports for controllers on Driverstation Laptop
     public static int XBOX = 0;

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drives;
 import frc.robot.subsystems.Limelight;
@@ -24,17 +25,24 @@ public class AimCommand extends PIDCommand {
   private Shooter shooter;
   private Drives drives;
 
-  public AimCommand(Limelight eyes, Shooter gun, Drives foot) {
+  public AimCommand(Limelight eyes, Drives foot) {
     super(
         // The controller that the command will use
-        new PIDController(0.005, 0.00001, 0),
+        new PIDController(0.05
+        , 0.00, 0),
         // This should return the measurement
-        () -> eyes.getTargetingValue("tx"),
+        () -> eyes.getOffset(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
-          foot.tankDrive(output, -1.0 * output);
+          //if (Math.abs(output) < 0.3) { output = 0.3 * Math.signum(output);}
+          SmartDashboard.putNumber("Aim Output", output);
+          if (eyes.targetVisible()) {
+            foot.tankDrive(-1.0 * output, output);
+          } else {
+            foot.tankDrive(0.0, 0.0);
+          }
           // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.

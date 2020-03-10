@@ -99,8 +99,8 @@ public class Revolver extends SubsystemBase {
 
     //if (! runtransit) {
 
-      collectorTransit.stopMotor();
-    //}
+      collectorController.setReference(0.0, ControlType.kVelocity);
+      //}
 
   }
 
@@ -134,6 +134,10 @@ public class Revolver extends SubsystemBase {
 
   }
   
+  public void backUpRevolver() {
+    revolverController.setReference(Constants.REVOLVER_CALIBRATION_SPEED * -1.0, ControlType.kVelocity);
+  }
+
   public void rotateToPosition(int position) {
 
     if(position < 0  || position > 4) {
@@ -155,7 +159,7 @@ public class Revolver extends SubsystemBase {
   public int nextEmptyPosition() {
 
     int cp = currentPosition();
-    for (int i = cp; i < cp + 4; i++) {
+    for (int i = cp; i < cp + 5; i++) {
 
      if (revolverArray.get(i) == 0) {
 
@@ -250,5 +254,6 @@ public class Revolver extends SubsystemBase {
     SmartDashboard.putNumber("Next Empty Postion", nextEmptyPosition());
     SmartDashboard.putNumber("Revolver Motor Bus Voltage", revolverMotor.getBusVoltage());
     SmartDashboard.putNumber("Revolver Current", revolverMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Transit Speed", collectorTransit.getEncoder().getVelocity());
   }
 }

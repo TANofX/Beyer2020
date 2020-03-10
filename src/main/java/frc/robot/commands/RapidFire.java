@@ -15,6 +15,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Revolver;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterSpeeds;
+import frc.robot.subsystems.Limelight.LEDMode;
 
 public class RapidFire extends CommandBase {
   private Shooter shooter;
@@ -23,6 +24,8 @@ public class RapidFire extends CommandBase {
   private int mightBeFinished = 0;
   private int slotTracker = 0;
   private int finalSlot = 4;// Because Noah wanted it to be 4.
+
+  private boolean nateProofed = false;
   /**
    * Creates a new Shoot.
    */
@@ -39,13 +42,21 @@ public class RapidFire extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (!shooter.atSpeed()) {
 
-    shooter.shoot();
-    slotTracker = revolver.currentPosition();
-    finalSlot = slotTracker + 4;
-    mightBeFinished = 0;
-    
+      nateProofed = true;
+
     }
+    else {
+      nateProofed = false;
+
+      shooter.shoot();
+      slotTracker = revolver.currentPosition();
+      finalSlot = slotTracker + 4;
+      mightBeFinished = 0;
+    }
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -61,19 +72,21 @@ public class RapidFire extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    if (!nateProofed) {
     shooter.stopShoot();
     revolver.assumeEmpty();
     shooter.moveHood(0.0);
     revolver.stopTransit();
     shooter.spinPrimaryMotor(ShooterSpeeds.OFF);
-
+    limelight.setLEDMode(LEDMode.OFF);
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   
+    if (nateProofed) return true;
+
     if (revolver.positionCheck() &&(slotTracker == finalSlot)){
      mightBeFinished++;
     }
