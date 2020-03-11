@@ -30,6 +30,7 @@ public class CalibrateRevolver extends CommandBase {
   public void initialize() {
 
     revolver.spinRevolver();
+    revolver.runTransit();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

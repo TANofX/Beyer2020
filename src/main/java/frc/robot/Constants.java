@@ -58,12 +58,12 @@ public final class Constants {
     public static final double NEO550_COUNTS_PER_REV = 1.0; 
 
     //Speeds
-    public static double SHOOTER_TRANSIT_SPEED = 0.75;
+    public static double SHOOTER_TRANSIT_SPEED = 0.9;
     public static double INTAKE_OMNI_MOTOR_SPEED = 4000; //changed from 0.75
     public static double INTAKE_TRANSIT1_SPEED = 2500; //0.05
     public static final double INTAKE_ROLLER_MOTOR_SPEED = 0.75;
     public static final double REVOLVER_CALIBRATION_SPEED = 1501.5;
-    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 2500;// was .25
+    public static final double COLLECTOR_TRANSIT_MOTOR_SPEED = 2200;// was .25
 
     
     

@@ -28,8 +28,7 @@ public class AimCommand extends PIDCommand {
   public AimCommand(Limelight eyes, Drives foot) {
     super(
         // The controller that the command will use
-        new PIDController(0.05
-        , 0.00, 0),
+        new PIDController(0.03, 0.00, -0.00),
         // This should return the measurement
         () -> eyes.getOffset(),
         // This should return the setpoint (can also be a constant)

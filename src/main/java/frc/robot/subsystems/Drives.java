@@ -68,7 +68,7 @@ public class Drives extends SubsystemBase {
     reverseIt(false);
   }
 
-  private void configureTalon(TalonSRX talon) {
+  private void configureTalon(TalonFX talon) {
 
     //neutral Mode means Coasting instead of braking after ... 
     talon.setNeutralMode(NeutralMode.Coast);
@@ -253,8 +253,8 @@ public class Drives extends SubsystemBase {
     //SmartDashboard.putNumber("LeftPrimaryMotorRpm", leftPrimaryTalonFX.getSelectedSensorVelocity(0));
     //SmartDashboard.putNumber("RightPrimaryMotorRpm", rightPrimaryTalonFX.getSelectedSensorVelocity(0));
 
-    SmartDashboard.putNumber("targetError", rightPrimaryTalonFX.getClosedLoopError());
-    SmartDashboard.putNumber("Target Position", rightPrimaryTalonFX.getClosedLoopTarget());
+    //SmartDashboard.putNumber("targetError", rightPrimaryTalonFX.getClosedLoopError());
+    //SmartDashboard.putNumber("Target Position", rightPrimaryTalonFX.getClosedLoopTarget());
     //SmartDashboard.putNumber("rightMotorPosition", rightPrimaryTalonFX.getSelectedSensorPosition(0));
 
     //SmartDashboard.putNumber("LeftPrimaryMotorVoltage", leftPrimaryTalonFX.getMotorOutputVoltage());

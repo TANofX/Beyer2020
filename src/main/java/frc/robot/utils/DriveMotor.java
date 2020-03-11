@@ -8,14 +8,14 @@
 package frc.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 
 /**
  * Add your docs here.
  */
-public class DriveMotor extends TalonSRX implements SpeedController {
+public class DriveMotor extends TalonFX implements SpeedController {
 
     @Override
     public void disable() {

@@ -22,6 +22,7 @@ public class RapidFire extends CommandBase {
   private Revolver revolver;
   private Limelight limelight;
   private int mightBeFinished = 0;
+  private int initialDelay = 0;
   private int slotTracker = 0;
   private int finalSlot = 4;// Because Noah wanted it to be 4.
 
@@ -56,17 +57,20 @@ public class RapidFire extends CommandBase {
       mightBeFinished = 0;
     }
 
+    initialDelay = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-      if (revolver.positionCheck() &&(slotTracker < finalSlot)){
+      if ((revolver.positionCheck() &&(slotTracker < finalSlot)) && initialDelay > 2){
 
         slotTracker++;
         revolver.rotateToPosition(slotTracker);
       }
+
+      initialDelay++;
   }
 
   // Called once the command ends or is interrupted.

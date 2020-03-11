@@ -135,10 +135,12 @@ public class Revolver extends SubsystemBase {
   }
   
   public void backUpRevolver() {
+    revolverController.setOutputRange(-1.0, 1.0);
     revolverController.setReference(Constants.REVOLVER_CALIBRATION_SPEED * -1.0, ControlType.kVelocity);
   }
 
   public void rotateToPosition(int position) {
+    revolverController.setOutputRange(0.0, 1.0);
 
     if(position < 0  || position > 4) {
      // throw new ArrayIndexOutOfBoundsException();

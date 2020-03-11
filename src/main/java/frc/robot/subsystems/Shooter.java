@@ -94,9 +94,9 @@ public class Shooter extends SubsystemBase {
 
     talon.configMotionCruiseVelocity(20600, 0);
     talon.configMotionAcceleration(5000, 0);
-    talon.config_kF(0, 0.05, 0); //talon.config_kF(0, 0.0496, 0);
-    talon.config_kP(0, 0.5, 0); //talon.config_kP(0, 0.05, 0);
-    talon.config_kI(0, 0.00001, 0); //talon.config_kI(0, 0.0, 0);
+    talon.config_kF(0, 0.06, 0); //talon.config_kF(0, 0.0496, 0);
+    talon.config_kP(0, 0.6, 0); //talon.config_kP(0, 0.05, 0);
+    talon.config_kI(0, 0.0, 0); //talon.config_kI(0, 0.0, 0);
 
     talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
 
