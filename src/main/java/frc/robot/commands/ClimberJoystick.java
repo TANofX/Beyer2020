@@ -5,37 +5,31 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
-//Gabe made this - We don't know what we are doing and we basically just coppied all of this from Philo2019
-//And it is probably all just old code that doesn't work     ----  WE NEED HELP
-//test.
-
-
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drives;
+import frc.robot.subsystems.Climber;
 
-public class DriveForward extends CommandBase {
-  
-  Drives drives;
-  double distance;
+public class ClimberJoystick extends CommandBase {
 
-  public DriveForward(Drives drivetrain, double inches) {
+  private Joystick xbox;
+  private Climber climber;
 
-    drives = drivetrain;
+  public ClimberJoystick(Climber climber, Joystick joystick) {
 
-    addRequirements(drives);
-    distance = inches;
+    xbox = joystick;
+    this.climber = climber;
+    
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drives.enableSafety(false);
-    drives.moveXInches(distance);
+
+
 
   }
 
@@ -43,20 +37,28 @@ public class DriveForward extends CommandBase {
   @Override
   public void execute() {
 
-    SmartDashboard.putNumber("Remaining Distance", distance - drives.inchesMoved());
-    SmartDashboard.putNumber("Inches Moved", drives.inchesMoved());
+    double joystickY = xbox.getY();
+
+    if(joystickY > -0.1 || joystickY < 0.1) {
+
+      climber.moveClimber(joystickY);
+
+    }
+    else climber.stopClimber();
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drives.enableSafety(true);
+
+    climber.stopClimber();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drives.isMoveXInchesFinished(distance);
+    return false;
   }
 }

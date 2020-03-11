@@ -7,58 +7,76 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drives;
-import frc.robot.utils.JoystickUtils;
+import frc.robot.subsystems.Revolver;
 
-public class JoystickCurvatureDrive extends CommandBase {
-  private Joystick xbox;
-  private Drives driveBase; 
 
-  /**
-   * Creates a new JoystickCurvatureDrive.
-   */
-  public JoystickCurvatureDrive(Joystick xboxController, Drives drives) {
-    xbox = xboxController;
-    driveBase = drives;
+
+public class IntakeCommand extends CommandBase {
+  frc.robot.subsystems.Intake intake;
+  Revolver revolver;
+
+
+  public IntakeCommand(frc.robot.subsystems.Intake intakeCommand, Revolver rev) {
+    intake = intakeCommand;
+    revolver = rev;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveBase);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    intake.moveRollerDown();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = 0.0;
-    double turnRate = 0.0;
-    speed = JoystickUtils.scaleDeadband(xbox.getRawAxis(Constants.XBOX_MOVE) * -1.0);
-    turnRate = JoystickUtils.scaleDeadband(xbox.getRawAxis(Constants.XBOX_TURN));
-    turnRate = turnRate/2.0;
-    
-    speed = speed / (xbox.getRawAxis(Constants.SLOW_DOWN) + 1.0);
 
-    driveBase.curvatureDrive(speed, turnRate);
 
-    
+    if ((revolver.sumFuelCells() == 4) && (intake.checkForFuel())) {
+
+        intake.stopIntakeRollers();
+    }
+
+    else if ((revolver.sumFuelCells() == 5) && (intake.checkForFuel())) {
+
+     intake.activateExtake();
+
+    }
+
+    else {
+      intake.activateIntakeRollers();
+    }
+
+    if (revolver.isRotating()) {
+     intake.stopIntake();
+    }
+
+    else   {
+    intake.activateIntake();
+    revolver.runTransit();
+    }
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
 
-    driveBase.stop();
-
+    intake.stopIntakeRollers();
+    intake.stopIntake();
+    revolver.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (revolver.sumFuelCells() == 5);
   }
 }

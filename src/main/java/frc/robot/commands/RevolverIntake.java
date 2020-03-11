@@ -5,37 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
-//Gabe made this - We don't know what we are doing and we basically just coppied all of this from Philo2019
-//And it is probably all just old code that doesn't work     ----  WE NEED HELP
-//test.
-
-
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drives;
+import frc.robot.subsystems.Revolver;
 
-public class DriveForward extends CommandBase {
-  
-  Drives drives;
-  double distance;
 
-  public DriveForward(Drives drivetrain, double inches) {
 
-    drives = drivetrain;
+public class RevolverIntake extends CommandBase {
+  /**
+   * Creates a new RevolverIntake.
+   */
 
-    addRequirements(drives);
-    distance = inches;
+   private Revolver revolver;
+  public RevolverIntake(Revolver rev) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    revolver = rev;
+    addRequirements(revolver);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drives.enableSafety(false);
-    drives.moveXInches(distance);
+
+    if ( revolver.intakeFuelCell()){
+      int next = revolver.nextEmptyPosition();
+   revolver.rotateToPosition(next);
+  }
 
   }
 
@@ -43,20 +39,27 @@ public class DriveForward extends CommandBase {
   @Override
   public void execute() {
 
-    SmartDashboard.putNumber("Remaining Distance", distance - drives.inchesMoved());
-    SmartDashboard.putNumber("Inches Moved", drives.inchesMoved());
-
+    if (revolver.positionCheck()) {
+     if ( revolver.intakeFuelCell()){
+         int next = revolver.nextEmptyPosition();
+      revolver.rotateToPosition(next);
+     }
+    }
+    
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drives.enableSafety(true);
+
+    revolver.stopIntake();
+    revolver.stopTransit();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drives.isMoveXInchesFinished(distance);
+    return ((revolver.sumFuelCells() == 5) && (revolver.positionCheck()));
   }
 }

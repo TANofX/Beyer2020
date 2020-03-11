@@ -5,58 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
-//Gabe made this - We don't know what we are doing and we basically just coppied all of this from Philo2019
-//And it is probably all just old code that doesn't work     ----  WE NEED HELP
-//test.
-
-
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drives;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Revolver;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-public class DriveForward extends CommandBase {
-  
-  Drives drives;
-  double distance;
-
-  public DriveForward(Drives drivetrain, double inches) {
-
-    drives = drivetrain;
-
-    addRequirements(drives);
-    distance = inches;
+public class CancelAll extends CommandBase {
+  /**
+   * Creates a new CancelAll.
+   */
+  public CancelAll(Revolver revolver, Intake intake, Shooter shooter, Climber climber) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(revolver, intake, shooter, climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drives.enableSafety(false);
-    drives.moveXInches(distance);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    SmartDashboard.putNumber("Remaining Distance", distance - drives.inchesMoved());
-    SmartDashboard.putNumber("Inches Moved", drives.inchesMoved());
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drives.enableSafety(true);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drives.isMoveXInchesFinished(distance);
+    return true;
   }
 }

@@ -9,7 +9,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 
 public class Limelight implements Subsystem {
 
@@ -162,8 +164,36 @@ public class Limelight implements Subsystem {
     }
   }
 
+  public double distanceToTarget() {
+
+    double targetViewAngle = Math.atan2(1,getTargetingValue("ty"));
+
+    double Distance = ((Constants.HEIGHT_OF_TARGET - Constants.LIMELIGHT_HEIGHT) / (Math.tan(Constants.LIMELIGHT_ANGLE - targetViewAngle)));
+
+    return Distance;
+
+  }
+
+  public boolean targetVisible(){
+
+    return (getTargetingValue("tv") == 1.0);
+
+  }
+
+  public double getOffset(){
+
+    double targetViewAngle = (getTargetingValue("tx"));
+
+    return targetViewAngle;
+
+  }
+
+  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Limelight Target Distance", distanceToTarget());
+    SmartDashboard.putNumber("Limelight Target Offset", getOffset());
   }
 }
