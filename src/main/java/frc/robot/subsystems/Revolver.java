@@ -39,6 +39,9 @@ public class Revolver extends SubsystemBase {
 
   private double targetPosition = 0.0;
 
+  private int fuelCellCount = 0;
+  private boolean fuelCellCountReady = false;
+
   private static final double TICKS_PER_REV = Constants.REVOLVER_GEAR_RATIO * Constants.NEO550_COUNTS_PER_REV;
   private static final double TICKS_PER_SLOT = (Math.ceil(TICKS_PER_REV / 5.0));
 
@@ -189,6 +192,8 @@ public class Revolver extends SubsystemBase {
 
   public boolean intakeFuelCell() {
 
+    fuelCellCountReady = false;
+
     if (checkForFuel()){
 
       revolverArray.set(this.currentPosition(), 1);
@@ -217,6 +222,7 @@ public class Revolver extends SubsystemBase {
 
     revolverArray.set(this.currentPosition() + 3, 0);
 
+    fuelCellCountReady = false;
   }
 
   public void assumeEmpty(){
@@ -226,19 +232,23 @@ public class Revolver extends SubsystemBase {
       revolverArray.set(i , 0);
     }
 
+    fuelCellCountReady = false;
   }
+
   public int sumFuelCells() {
+    if (!fuelCellCountReady) {
+      fuelCellCount = 0;
 
-    int sum = 0;
+      for (int i = 0; i < 5; i++){
 
-    for (int i = 0; i < 5; i++){
+        fuelCellCount = fuelCellCount + revolverArray.get(i);
 
-      sum = sum + revolverArray.get(i);
+      }
 
+      fuelCellCountReady = true;
     }
 
-    return sum;
-
+    return fuelCellCount;
   }
 
   @Override
