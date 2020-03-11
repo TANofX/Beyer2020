@@ -119,11 +119,11 @@ public class RobotContainer {
   private final Climber m_Climber = new Climber();
   private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
 
-  private final IndicatorLights m_Direction = new IndicatorLights(5, m_Drives);
-  private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver);
-  private final IndicatorLights m_Aim = new IndicatorLights(10, m_Limelight);
-  private final IndicatorLights m_Direction2 = new IndicatorLights(10, m_Drives);
-  private final IndicatorLights m_Ball2 = new IndicatorLights(10, m_Revolver);
+  private final IndicatorLights m_Direction = new IndicatorLights(5, m_Drives, false);
+  private final IndicatorLights m_Ball = new IndicatorLights(10, m_Revolver, true);
+  private final IndicatorLights m_Aim = new IndicatorLights(10, m_Limelight, false);
+  private final IndicatorLights m_Direction2 = new IndicatorLights(10, m_Drives, false);
+  private final IndicatorLights m_Ball2 = new IndicatorLights(10, m_Revolver, false);
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
