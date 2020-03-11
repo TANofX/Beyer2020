@@ -74,6 +74,7 @@ public class Revolver extends SubsystemBase {
     revolverController.setSmartMotionAllowedClosedLoopError(0.0, 0);
     revolverController.setOutputRange(0.0, 1.0);
 
+    collectorTransit.setSmartCurrentLimit(10, 11000);
     collectorController.setP(0.00000125);
     collectorController.setI(0.00000025);
     collectorController.setD(0.0);
@@ -180,9 +181,10 @@ public class Revolver extends SubsystemBase {
   }
 
   public void calibrateRevolver() {
-        revolverEncoder.setPosition(0.0);
-        targetPosition = 0;
-  }
+        revolverEncoder.setPosition(-1.0);
+        targetPosition = TICKS_PER_SLOT;
+        revolverController.setReference(targetPosition, ControlType.kSmartMotion, 0);
+      }
 
   public boolean checkForFuel() {
 
@@ -227,6 +229,8 @@ public class Revolver extends SubsystemBase {
 
   public void assumeEmpty(){
 
+    fuelCellCountReady = false;
+    
     for (int i = 0; i <= 4; i ++ ){
 
       revolverArray.set(i , 0);

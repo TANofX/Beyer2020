@@ -172,7 +172,7 @@ public class RobotContainer {
       .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -39.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
       .andThen(new DriveForward(m_Drives, 40))));
-
+/*
     m_Chooser.addOption("collect 3 then shoot", new LowerIntake(m_Intake)
       .andThen(new CalibrateRevolver(m_Revolver))
       .alongWith(new CalibrateShooter(m_Shooter))
@@ -181,7 +181,7 @@ public class RobotContainer {
       .alongWith(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -43.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight))
       .andThen(new DriveForward(m_Drives, 280)));
-
+*/
     m_Chooser.addOption("Close Shot", new LowerIntake(m_Intake)
     .andThen(new CalibrateRevolver(m_Revolver))
     .alongWith(new CalibrateShooter(m_Shooter))

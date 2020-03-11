@@ -28,7 +28,7 @@ public class AimCommand extends PIDCommand {
   public AimCommand(Limelight eyes, Drives foot) {
     super(
         // The controller that the command will use
-        new PIDController(0.03, 0.00, -0.00),
+        new PIDController(0.025, 0.00, -0.00),
         // This should return the measurement
         () -> eyes.getOffset(),
         // This should return the setpoint (can also be a constant)
@@ -37,6 +37,7 @@ public class AimCommand extends PIDCommand {
         output -> {
           //if (Math.abs(output) < 0.3) { output = 0.3 * Math.signum(output);}
           SmartDashboard.putNumber("Aim Output", output);
+          output += Math.signum(output) * 0.32;
           if (eyes.targetVisible()) {
             foot.tankDrive(-1.0 * output, output);
           } else {
