@@ -28,6 +28,8 @@ import frc.robot.commands.CancelRevolver;
 import frc.robot.commands.ClimberJoystick;
 import frc.robot.commands.DisableLimelight;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveTurnLeft;
+import frc.robot.commands.DriveTurnRight;
 import frc.robot.commands.EnableLimelight;
 import frc.robot.commands.Extake;
 import frc.robot.commands.FollowTarget;
@@ -170,7 +172,7 @@ public class RobotContainer {
       .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -39.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
       .andThen(new DriveForward(m_Drives, 40))));
-/*
+
     m_Chooser.addOption("collect 3 then shoot", new LowerIntake(m_Intake)
       .andThen(new CalibrateRevolver(m_Revolver))
       .alongWith(new CalibrateShooter(m_Shooter))
@@ -179,7 +181,7 @@ public class RobotContainer {
       .alongWith(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -43.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight))
       .andThen(new DriveForward(m_Drives, 280)));
-*/
+
     m_Chooser.addOption("Close Shot", new LowerIntake(m_Intake)
     .andThen(new CalibrateRevolver(m_Revolver))
     .alongWith(new CalibrateShooter(m_Shooter))
@@ -187,12 +189,17 @@ public class RobotContainer {
     .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5))
     .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)));
 
-    // m_Chooser.addOption("Enemy Trench Run (Start W/ 0)", new LowerIntake(m_Intake)
-    // .andThen(new CalibrateRevolver(m_Revolver))
-    // .alongWith(new CalibrateShooter(m_Shooter))
-    // .andThen(new DriveForward(m_Drives, -180).deadlineWith(new IntakeCommand(m_Intake, m_Revolver)))
-    // .andThen
-    // );
+    m_Chooser.addOption("Enemy Trench Run (Start W/ 0)", new LowerIntake(m_Intake)
+    .andThen(new CalibrateRevolver(m_Revolver))
+    .alongWith(new CalibrateShooter(m_Shooter))
+    .andThen(new DriveForward(m_Drives, -180).deadlineWith(new IntakeCommand(m_Intake, m_Revolver)))
+    .andThen(new DriveForward(m_Drives, 180))
+    .andThen(new DriveTurnRight(m_Drives))
+    .andThen(new DriveForward(m_Drives, 200))
+    .andThen(new DriveTurnLeft(m_Drives))
+    .andThen(new AimCommand(m_Limelight, m_Drives))
+    
+    );
 
     SmartDashboard.putData("Auto Options", m_Chooser);
 
