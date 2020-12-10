@@ -65,7 +65,7 @@ public class RapidFire extends CommandBase {
     shooter.stopShoot();
     revolver.assumeEmpty();
     shooter.moveHood(0.0);
-    revolver.stopTransit();
+    revolver.stopRevolver();
     shooter.spinPrimaryMotor(ShooterSpeeds.OFF);
 
   }

@@ -38,6 +38,7 @@ import frc.robot.commands.ToggleReverse;
 import frc.robot.commands.RapidFire;
 import frc.robot.commands.RevolverIntake;
 import frc.robot.subsystems.Drives;
+import frc.robot.subsystems.GreenWheel;
 import frc.robot.subsystems.IndicatorLights;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
@@ -103,10 +104,10 @@ public class RobotContainer {
 
   private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
   //private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
-
+  private final GreenWheel m_Transit = new GreenWheel();
   private final Shooter m_Shooter = new Shooter();
-  private final Revolver m_Revolver = new Revolver();
-  private final Intake m_Intake = new Intake();
+  private final Revolver m_Revolver = new Revolver(m_Transit);
+  private final Intake m_Intake = new Intake(m_Transit);
   private final Limelight m_Limelight = new Limelight();
   private final SendableChooser<Command> m_Chooser = new SendableChooser<Command>();
  // private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
@@ -162,6 +163,20 @@ public class RobotContainer {
       .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -39.0))
       .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)
       .andThen(new DriveForward(m_Drives, 40))));
+  
+
+    // m_Chooser.addOption("Drive forward then shoot", new LowerIntake(m_Intake)
+    //   .andThen(new CalibrateRevolver(m_Revolver))
+    //   .alongWith(new CalibrateShooter(m_Shooter))
+    //   .andThen(new DriveForward(m_Drives, 120))
+    //   .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5))
+    //   .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)));
+
+    // m_Chooser.addOption("Enemy Trench Run", new LowerIntake(m_Intake)
+    // .andThen(new CalibrateRevolver(m_Revolver))
+    // .alongWith(new CalibrateShooter(m_Shooter))
+    // .andThen(new DriveForward(m_Drives, inches))
+    //);
     SmartDashboard.putData("Auto Options", m_Chooser);
 
     extake.whileActiveContinuous(new Extake(m_Intake));

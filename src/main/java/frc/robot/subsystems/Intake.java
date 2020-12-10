@@ -37,10 +37,12 @@ AnalogInput fuelCellSensor;
 CANPIDController OmniController;
 CANPIDController intakeTransitController;
 
+GreenWheel transitWheel;
 
 
 
-  public Intake() {
+
+  public Intake(GreenWheel theWheel) {
 
     intakeRollerMotor = new CANSparkMax(Constants.INTAKE_ROLLERS, MotorType.kBrushless);
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
@@ -49,6 +51,8 @@ CANPIDController intakeTransitController;
     fuelCellSensor = new AnalogInput(Constants.INTAKE_FUEL_CELL_SENSOR);
     OmniController = new CANPIDController(intakeOmniMotor);
     intakeTransitController = new CANPIDController(intakeTransitMotor1);
+
+    transitWheel = theWheel;
 
     configureTalon(intakeRollerMotor);
 
@@ -107,6 +111,7 @@ CANPIDController intakeTransitController;
     if(collectorArm.get() == DoubleSolenoid.Value.kForward) { 
     OmniController.setReference(Constants.INTAKE_OMNI_MOTOR_SPEED, ControlType.kVelocity);
     intakeTransitController.setReference(Constants.INTAKE_TRANSIT1_SPEED * 1.0, ControlType.kVelocity);
+    transitWheel.runTransit();
     }
 
   }
@@ -125,6 +130,7 @@ CANPIDController intakeTransitController;
     
     intakeOmniMotor.stopMotor();
     intakeTransitMotor1.stopMotor();
+    transitWheel.stopTransit();
 
   }
 

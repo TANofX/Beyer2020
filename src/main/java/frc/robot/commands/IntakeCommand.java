@@ -60,7 +60,7 @@ public class IntakeCommand extends CommandBase {
 
     else   {
     intake.activateIntake();
-    revolver.runTransit();
+    
     }
   }
 
@@ -71,7 +71,6 @@ public class IntakeCommand extends CommandBase {
 
     intake.stopIntakeRollers();
     intake.stopIntake();
-    revolver.stopIntake();
   }
 
   // Returns true when the command should end.

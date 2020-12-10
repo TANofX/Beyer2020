@@ -29,15 +29,13 @@ import frc.robot.utils.CircularArrayList;
 public class Revolver extends SubsystemBase {
   private CANPIDController revolverController; 
   private CANSparkMax revolverMotor;
-  private CANSparkMax collectorTransit;
   private CANEncoder revolverEncoder;
   private AnalogInput fuelCellSensor;
   private DigitalInput revolverPositionSensor;
   private CircularArrayList<Integer> revolverArray; 
-  private CANPIDController collectorController;
-  private boolean runtransit = false;
 
   private double targetPosition = 0.0;
+  private GreenWheel transitWheel;
 
   private static final double TICKS_PER_REV = Constants.REVOLVER_GEAR_RATIO * Constants.NEO550_COUNTS_PER_REV;
   private static final double TICKS_PER_SLOT = (Math.ceil(TICKS_PER_REV / 5.0));
@@ -45,16 +43,15 @@ public class Revolver extends SubsystemBase {
   /**
    * Creates a new Revolver.
    */
-  public Revolver() {
+  public Revolver(GreenWheel theWheel) {
     revolverMotor = new CANSparkMax(Constants.REVOLVER_MOTOR_ID, MotorType.kBrushless);
-    collectorTransit = new CANSparkMax(Constants.COLLECTOR_TRANSIT_MOTOR, MotorType.kBrushless);
-    collectorController = collectorTransit.getPIDController();
     revolverController = revolverMotor.getPIDController();
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
     revolverMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
     revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
     revolverArray = new CircularArrayList<Integer>(5);
+    transitWheel = theWheel;
     for (int i = 0; i < 5; i++) {
 
       revolverArray.add(i, 0);
@@ -71,49 +68,19 @@ public class Revolver extends SubsystemBase {
     revolverController.setSmartMotionAllowedClosedLoopError(0.0, 0);
     revolverController.setOutputRange(0.0, 1.0);
 
-    collectorController.setP(0.00000125);
-    collectorController.setI(0.00000025);
-    collectorController.setD(0.0);
-    collectorController.setFF(0.0);
-    collectorController.setSmartMotionMaxVelocity(4200.0, 0);
-    collectorController.setSmartMotionMinOutputVelocity(0.0, 0);
-    collectorController.setSmartMotionMaxAccel(15000.0, 0);
-    collectorController.setSmartMotionAllowedClosedLoopError(0.0, 0);
-    collectorController.setOutputRange(-1.0, 1.0);
-
   }
 
   public void spinRevolver() {
 
     revolverController.setReference(Constants.REVOLVER_CALIBRATION_SPEED, ControlType.kVelocity);
+    transitWheel.runTransit();
 
-  }
-
-  public void runTransit(){
-
-    runtransit = true;
-    collectorController.setReference(Constants.COLLECTOR_TRANSIT_MOTOR_SPEED, ControlType.kVelocity);
-  }
-
-  public void stopTransit() {
-
-    //if (! runtransit) {
-
-      collectorTransit.stopMotor();
-    //}
-
-  }
-
-  public void stopIntake() {
-
-    runtransit = false;
-    stopTransit();
   }
 
   public void stopRevolver() {
 
     revolverController.setReference(0.0, ControlType.kVelocity);
-    stopTransit();
+    transitWheel.stopTransit();
   }
 
  
@@ -140,8 +107,7 @@ public class Revolver extends SubsystemBase {
      // throw new ArrayIndexOutOfBoundsException();
      position = position % 5;
     }
-
-    runTransit();
+    transitWheel.runTransit();
 
     int Revolution = currentRevolution();
     if(position < currentPosition()) Revolution++;

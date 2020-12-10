@@ -34,7 +34,7 @@ public class BallCount extends CommandBase  {
   @Override
   public void execute() {
 
-    if (revolver.positionCheck()) {
+    if ((timesRun <= 4) && revolver.positionCheck()) {
 
     revolver.intakeFuelCell();
     revolver.rotateToPosition(revolver.currentPosition() + 1);
@@ -44,7 +44,6 @@ public class BallCount extends CommandBase  {
 
     if (timesRun < 4) {
 
-      revolver.stopIntake();
 
     }
   }
@@ -53,11 +52,12 @@ public class BallCount extends CommandBase  {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    revolver.stopRevolver();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timesRun > 4;
+    return (timesRun > 4) && (revolver.positionCheck());
   }
 }
