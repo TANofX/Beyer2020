@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,6 +22,7 @@ public class GreenWheel extends SubsystemBase {
    */
   private CANSparkMax collectorTransit;
   private CANPIDController collectorController;
+  private int startCount = 0;
   
   public GreenWheel() {
  collectorTransit = new CANSparkMax(Constants.COLLECTOR_TRANSIT_MOTOR, MotorType.kBrushless);
@@ -37,20 +39,23 @@ public class GreenWheel extends SubsystemBase {
   }
 
   public void runTransit(){
-
     collectorController.setReference(Constants.COLLECTOR_TRANSIT_MOTOR_SPEED, ControlType.kVelocity);
+    startCount++;
   }
 
   public void stopTransit() {
+      startCount--;
 
-    //if (! runtransit) {
-
-      collectorTransit.stopMotor();
-    //}
-
+      if (startCount == 0) {
+        collectorTransit.stopMotor();
+      } else if (startCount < 0) {
+        startCount = 0;
+      }
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Green Wheel", startCount);
   }
 }
