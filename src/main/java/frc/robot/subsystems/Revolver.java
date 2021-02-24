@@ -35,7 +35,6 @@ public class Revolver extends SubsystemBase {
   private CircularArrayList<Integer> revolverArray; 
 
   private double targetPosition = 0.0;
-  private GreenWheel transitWheel;
 
   private static final double TICKS_PER_REV = Constants.REVOLVER_GEAR_RATIO * Constants.NEO550_COUNTS_PER_REV;
   private static final double TICKS_PER_SLOT = (Math.ceil(TICKS_PER_REV / 5.0));
@@ -43,7 +42,7 @@ public class Revolver extends SubsystemBase {
   /**
    * Creates a new Revolver.
    */
-  public Revolver(GreenWheel theWheel) {
+  public Revolver() {
     revolverMotor = new CANSparkMax(Constants.REVOLVER_MOTOR_ID, MotorType.kBrushless);
     revolverController = revolverMotor.getPIDController();
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
@@ -51,13 +50,13 @@ public class Revolver extends SubsystemBase {
     fuelCellSensor = new AnalogInput(Constants.FUEL_CELL_SENSOR_PORT);
     revolverPositionSensor = new DigitalInput(Constants.REVOLVER_POSITION_SENSOR);
     revolverArray = new CircularArrayList<Integer>(5);
-    transitWheel = theWheel;
+  
     for (int i = 0; i < 5; i++) {
 
       revolverArray.add(i, 0);
 
     }
-    revolverMotor.setSmartCurrentLimit(10, 11000);
+    revolverMotor.setSmartCurrentLimit(20, 80);
     revolverController.setP(0.000001);
     revolverController.setI(0.000000004);
     revolverController.setD(0.0);
@@ -73,14 +72,12 @@ public class Revolver extends SubsystemBase {
   public void spinRevolver() {
 
     revolverController.setReference(Constants.REVOLVER_CALIBRATION_SPEED, ControlType.kVelocity);
-    transitWheel.runTransit();
 
   }
 
   public void stopRevolver() {
 
     revolverController.setReference(0.0, ControlType.kVelocity);
-    transitWheel.stopTransit();
   }
 
  
@@ -107,7 +104,6 @@ public class Revolver extends SubsystemBase {
      // throw new ArrayIndexOutOfBoundsException();
      position = position % 5;
     }
-    transitWheel.runTransit();
 
     int Revolution = currentRevolution();
     if(position < currentPosition()) Revolution++;

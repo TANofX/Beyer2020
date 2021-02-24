@@ -47,7 +47,8 @@ public class GreenWheel extends SubsystemBase {
       startCount--;
 
       if (startCount == 0) {
-        collectorTransit.stopMotor();
+       // collectorTransit.stopMotor();
+       collectorController.setReference(0, ControlType.kVelocity);
       } else if (startCount < 0) {
         startCount = 0;
       }

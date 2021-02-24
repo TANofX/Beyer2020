@@ -34,14 +34,14 @@ public class CircularArrayList<E> extends ArrayList<E> {
 
 	@Override
 	public E get(int arg0) {
-		int pos = arg0 % fixedLength;
-		
+		int pos = coerceIndex(arg0);
+
 		return super.get(pos);
 	}
 
 	@Override
 	public E set(int arg0, E arg1) {
-		int pos = arg0 % fixedLength;
+		int pos = coerceIndex(arg0);
 		
 		return super.set(pos, arg1);
 	}
@@ -57,9 +57,17 @@ public class CircularArrayList<E> extends ArrayList<E> {
 	
 	@Override
 	public void add(int index, E element) {
+		int pos = coerceIndex(index);
 		if (super.size() < fixedLength) {
-			super.add(index, element);
+			super.add(pos, element);
 		}
 	}
 
+	private int coerceIndex(int index){
+		int pos = index % fixedLength;
+		if (index <0){
+			pos = pos + fixedLength;
+		}
+		return pos;
+	}
 }

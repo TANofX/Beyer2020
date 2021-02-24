@@ -52,7 +52,7 @@ public class RapidFire extends CommandBase {
   public void execute() {
 
       if (revolver.positionCheck() &&(slotTracker < finalSlot)){
-
+        revolver.stopRevolver();
         slotTracker++;
         revolver.rotateToPosition(slotTracker);
       }

@@ -25,6 +25,7 @@ import frc.robot.commands.CalibrateShooter;
 import frc.robot.commands.CancelAll;
 import frc.robot.commands.CancelRevolver;
 import frc.robot.commands.ClimberJoystick;
+import frc.robot.commands.DefaultGreenWheel;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.Extake;
 import frc.robot.commands.FollowTarget;
@@ -106,7 +107,7 @@ public class RobotContainer {
   //private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
   private final GreenWheel m_Transit = new GreenWheel();
   private final Shooter m_Shooter = new Shooter();
-  private final Revolver m_Revolver = new Revolver(m_Transit);
+  private final Revolver m_Revolver = new Revolver();
   private final Intake m_Intake = new Intake(m_Transit);
   private final Limelight m_Limelight = new Limelight();
   private final SendableChooser<Command> m_Chooser = new SendableChooser<Command>();
@@ -142,7 +143,7 @@ public class RobotContainer {
     //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
     m_ReverseToggle.toggleWhenPressed(new ToggleReverse(m_Drives));
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
-    
+    CommandScheduler.getInstance().setDefaultCommand(m_Transit, new DefaultGreenWheel(m_Transit, m_Revolver));
     spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
     //spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
@@ -196,7 +197,7 @@ public class RobotContainer {
     
     enableClimber.whenActive(()-> m_Climber.enableClimber(true));
     enableClimber.whenInactive(()-> m_Climber.enableClimber(false));
-    cancel.whenPressed(new CancelAll(m_Revolver, m_Intake, m_Shooter, m_Climber));
+    cancel.whenPressed(new CancelAll(m_Revolver, m_Intake, m_Shooter, m_Climber, m_Transit));
     CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
 
     closeGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5));

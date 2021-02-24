@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.music.Orchestra;
-import com.ctre.phoenix.sensors.PigeonIMU;
+//import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -42,7 +42,7 @@ public class Drives extends SubsystemBase {
   private DifferentialDrive rDifferentialDrive;
   private DifferentialDrive currentDifferentialDrive;
   private boolean isReversed;
-  private PigeonIMU gyroSensor;
+ // private PigeonIMU gyroSensor;
 
   public Drives() {
 
@@ -52,7 +52,7 @@ public class Drives extends SubsystemBase {
     leftSecondaryTalonFX = new DriveMotor(Constants.LEFT_SECONDARY_MOTOR);
     rightSecondaryTalonFX = new DriveMotor(Constants.RIGHT_SECONDARY_MOTOR);
 
-    gyroSensor = new PigeonIMU(Constants.PIGEON_IMU);
+  //  gyroSensor = new PigeonIMU(Constants.PIGEON_IMU);
 
     leftSecondaryTalonFX.follow(leftPrimaryTalonFX);
     rightSecondaryTalonFX.follow(rightPrimaryTalonFX);
@@ -144,7 +144,7 @@ public class Drives extends SubsystemBase {
 
     primaryTalonConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.Pigeon_Yaw;
 
-    primaryTalonConfig.remoteFilter0.remoteSensorDeviceID = gyroSensor.getDeviceID();
+   // primaryTalonConfig.remoteFilter0.remoteSensorDeviceID = gyroSensor.getDeviceID();
 
     primaryTalonConfig.slot1.kP = 0;
     primaryTalonConfig.slot1.kI = 0;
