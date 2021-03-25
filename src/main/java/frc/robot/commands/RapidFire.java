@@ -44,7 +44,7 @@ public class RapidFire extends CommandBase {
     slotTracker = revolver.currentPosition();
     finalSlot = slotTracker + 4;
     mightBeFinished = 0;
-    
+    revolver.rotateToPosition(slotTracker);
     }
 
   // Called every time the scheduler runs while the command is scheduled.
