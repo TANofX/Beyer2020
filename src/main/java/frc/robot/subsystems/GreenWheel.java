@@ -26,6 +26,7 @@ public class GreenWheel extends SubsystemBase {
   
   public GreenWheel() {
  collectorTransit = new CANSparkMax(Constants.COLLECTOR_TRANSIT_MOTOR, MotorType.kBrushless);
+ collectorTransit.restoreFactoryDefaults();
  collectorController = collectorTransit.getPIDController();
     collectorController.setP(0.00000125);
     collectorController.setI(0.00000025);

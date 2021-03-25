@@ -47,14 +47,20 @@ GreenWheel transitWheel;
     intakeRollerMotor = new CANSparkMax(Constants.INTAKE_ROLLERS, MotorType.kBrushless);
     intakeOmniMotor = new CANSparkMax(Constants.INTAKE_OMNI_WHEEL, MotorType.kBrushless);
     intakeTransitMotor1 = new CANSparkMax(Constants.INTAKE_TRANSIT, MotorType.kBrushless);
+
+    intakeRollerMotor.restoreFactoryDefaults();
+    intakeOmniMotor.restoreFactoryDefaults();
+    intakeTransitMotor1.restoreFactoryDefaults();
+
     collectorArm = new DoubleSolenoid(Constants.PCM ,Constants.INTAKE_FOREWARD_SOLENOID, Constants.INTAKE_REVERSE_SOLENOID);
     fuelCellSensor = new AnalogInput(Constants.INTAKE_FUEL_CELL_SENSOR);
-    OmniController = new CANPIDController(intakeOmniMotor);
-    intakeTransitController = new CANPIDController(intakeTransitMotor1);
+    OmniController = intakeOmniMotor.getPIDController();
+    intakeTransitController = intakeTransitMotor1.getPIDController();
 
     transitWheel = theWheel;
 
-    configureTalon(intakeRollerMotor);
+    
+    //configureTalon(intakeRollerMotor);
 
     intakeOmniMotor.setSmartCurrentLimit(50, 120);
 
@@ -77,7 +83,8 @@ GreenWheel transitWheel;
     intakeTransitController.setSmartMotionMaxAccel(15000.0, 0);
     intakeTransitController.setSmartMotionAllowedClosedLoopError(0.0, 0);
     intakeTransitController.setOutputRange(-1.0, 1.0);
-  }
+  } 
+  
 
   private void configureTalon(CANSparkMax talon) {
 

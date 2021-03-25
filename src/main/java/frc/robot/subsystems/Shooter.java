@@ -52,18 +52,20 @@ public class Shooter extends SubsystemBase {
 
     primaryShooterTalonFX = new TalonSRX(Constants.PRIMARY_SHOOTER_MOTOR);
     secondaryShooterTalonFX = new TalonSRX(Constants.SECONDARY_SHOOTER_MOTOR);
-
+    primaryShooterTalonFX.configFactoryDefault();
+    secondaryShooterTalonFX.configFactoryDefault();
 
 
 
     hoodMotor = new CANSparkMax(Constants.HOOD_MOTOR, MotorType.kBrushless);
+    hoodMotor.restoreFactoryDefaults();
     hoodController = hoodMotor.getPIDController();
     hoodEncoder = hoodMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
     hoodMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
     hoodMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyClosed).enableLimitSwitch(true);
 
     transitMotor = new CANSparkMax(Constants.SHOOTER_TRANSIT, MotorType.kBrushless);
-    
+    transitMotor.restoreFactoryDefaults();
 
     configureTalon(primaryShooterTalonFX);
     configureTalon(secondaryShooterTalonFX);

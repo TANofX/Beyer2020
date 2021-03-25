@@ -105,13 +105,14 @@ public class RobotContainer {
 
   private final JoystickCurvatureDrive m_CurvatureCommand = new JoystickCurvatureDrive(m_xbox, m_Drives);
   //private final JoystickTankDrive m_TankDrive = new JoystickTankDrive(m_stick, m_stick2, m_Drives);
+  
   private final GreenWheel m_Transit = new GreenWheel();
   private final Shooter m_Shooter = new Shooter();
   private final Revolver m_Revolver = new Revolver();
   private final Intake m_Intake = new Intake(m_Transit);
   private final Limelight m_Limelight = new Limelight();
   private final SendableChooser<Command> m_Chooser = new SendableChooser<Command>();
- // private final PCMSubsystem m_PCMSubsystem = new PCMSubsystem();
+
   private final Climber m_Climber = new Climber();
   private final ClimberJoystick m_climberJoystick = new ClimberJoystick(m_Climber, m_stick);
 
@@ -120,13 +121,15 @@ public class RobotContainer {
   private final IndicatorLights m_Aim = new IndicatorLights(10, m_Limelight);
   private final IndicatorLights m_Direction2 = new IndicatorLights(10, m_Drives);
   private final IndicatorLights m_Ball2 = new IndicatorLights(10, m_Revolver);
-  
+
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
     m_Limelight.setLEDMode(LEDMode.OFF);
     m_Limelight.setCameraMode(CamMode.DRIVER);
   }
@@ -139,18 +142,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    //spinRevolver.whenPressed(()-> Revolver.SpinRevolver());
-    //driveTestButton.whenPressed(()-> m_Drives.moveXInches(36));
     m_ReverseToggle.toggleWhenPressed(new ToggleReverse(m_Drives));
     CommandScheduler.getInstance().setDefaultCommand(m_Drives, m_CurvatureCommand);
     CommandScheduler.getInstance().setDefaultCommand(m_Transit, new DefaultGreenWheel(m_Transit, m_Revolver));
     spinHigh.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.HIGHSPEED));
-    //spinMedium.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.MEDIUMSPEED));
+
     spinLow.whenPressed(()-> m_Shooter.spinPrimaryMotor(ShooterSpeeds.LOWSPEED));
     spinStop.whenPressed(()-> m_Shooter.stop());
     shoot.whenPressed(new RapidFire(m_Shooter, m_Revolver, m_Limelight));
     hoodUp.whileHeld(new MoveHood(m_Shooter, true));
     hoodDown.whileHeld(new MoveHood(m_Shooter, false));
+    
     
     m_Chooser.setDefaultOption("Drive Forward", new LowerIntake(m_Intake)
        .andThen(new DriveForward(m_Drives, 40))
@@ -166,18 +168,6 @@ public class RobotContainer {
       .andThen(new DriveForward(m_Drives, 40))));
   
 
-    // m_Chooser.addOption("Drive forward then shoot", new LowerIntake(m_Intake)
-    //   .andThen(new CalibrateRevolver(m_Revolver))
-    //   .alongWith(new CalibrateShooter(m_Shooter))
-    //   .andThen(new DriveForward(m_Drives, 120))
-    //   .andThen(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5))
-    //   .andThen(new RapidFire(m_Shooter, m_Revolver, m_Limelight)));
-
-    // m_Chooser.addOption("Enemy Trench Run", new LowerIntake(m_Intake)
-    // .andThen(new CalibrateRevolver(m_Revolver))
-    // .alongWith(new CalibrateShooter(m_Shooter))
-    // .andThen(new DriveForward(m_Drives, inches))
-    //);
     SmartDashboard.putData("Auto Options", m_Chooser);
 
     extake.whileActiveContinuous(new Extake(m_Intake));
@@ -200,11 +190,10 @@ public class RobotContainer {
     cancel.whenPressed(new CancelAll(m_Revolver, m_Intake, m_Shooter, m_Climber, m_Transit));
     CommandScheduler.getInstance().setDefaultCommand(m_Climber, m_climberJoystick);
 
-    closeGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.5));
+    closeGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.LOWSPEED, -6.));
     tenFootGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.MEDIUMSPEED, -38));
     trenchGoal.whenPressed(new ShooterPreset(m_Shooter, ShooterSpeeds.HIGHSPEED, -55));
     
-    //lineUP.whileHeld(new FollowTarget(m_Limelight, m_Drives, spinKp, spinKi, spinMin, driveKp, driveKi, driveMin, targetWidth, allowedAngle, allowedDistance));
   }
 
   /**
@@ -214,7 +203,7 @@ public class RobotContainer {
    */
  public Command getAutonomousCommand() {
 
-    return m_Chooser.getSelected();
+    return null; //m_Chooser.getSelected();
  }
   // An ExampleCommand will run in autonomous
   }

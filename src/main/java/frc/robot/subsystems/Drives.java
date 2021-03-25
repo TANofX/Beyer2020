@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.music.Orchestra;
+import com.ctre.phoenix.sensors.PigeonIMU;
 //import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utils.CsvLogger;
 import frc.robot.utils.DriveMotor;
 
 public class Drives extends SubsystemBase {
@@ -42,7 +44,7 @@ public class Drives extends SubsystemBase {
   private DifferentialDrive rDifferentialDrive;
   private DifferentialDrive currentDifferentialDrive;
   private boolean isReversed;
- // private PigeonIMU gyroSensor;
+  private PigeonIMU gyroSensor;
 
   public Drives() {
 
@@ -52,7 +54,13 @@ public class Drives extends SubsystemBase {
     leftSecondaryTalonFX = new DriveMotor(Constants.LEFT_SECONDARY_MOTOR);
     rightSecondaryTalonFX = new DriveMotor(Constants.RIGHT_SECONDARY_MOTOR);
 
-  //  gyroSensor = new PigeonIMU(Constants.PIGEON_IMU);
+    gyroSensor = new PigeonIMU(Constants.PIGEON_IMU);
+    CsvLogger.addLoggingField("XZ", "degrees", () -> {double[] array = new double[3]; gyroSensor.getAccelerometerAngles(array); return "" + array[0];});
+    CsvLogger.addLoggingField("YZ", "degrees", () -> {double[] array = new double[3]; gyroSensor.getAccelerometerAngles(array); return "" + array[1];});
+    CsvLogger.addLoggingField("XY", "degrees", () -> {double[] array = new double[3]; gyroSensor.getAccelerometerAngles(array); return "" + array[2];});
+    CsvLogger.addLoggingField("Pitch", "degrees", () -> {double[] array = new double[3]; gyroSensor.getYawPitchRoll(array); return "" + array[1];});
+    CsvLogger.addLoggingField("Roll", "degrees", () -> {double[] array = new double[3]; gyroSensor.getYawPitchRoll(array); return "" + array[2];});
+    CsvLogger.addLoggingField("Yaw", "degrees", () -> {double[] array = new double[3]; gyroSensor.getYawPitchRoll(array); return "" + array[0];});
 
     leftSecondaryTalonFX.follow(leftPrimaryTalonFX);
     rightSecondaryTalonFX.follow(rightPrimaryTalonFX);

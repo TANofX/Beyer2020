@@ -44,6 +44,7 @@ public class Revolver extends SubsystemBase {
    */
   public Revolver() {
     revolverMotor = new CANSparkMax(Constants.REVOLVER_MOTOR_ID, MotorType.kBrushless);
+    revolverMotor.restoreFactoryDefaults();
     revolverController = revolverMotor.getPIDController();
     revolverEncoder = revolverMotor.getEncoder(EncoderType.kHallSensor, (int)Constants.NEO550_COUNTS_PER_REV);
     revolverMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
@@ -57,6 +58,7 @@ public class Revolver extends SubsystemBase {
 
     }
     revolverMotor.setSmartCurrentLimit(20, 80);
+    
     revolverController.setP(0.000001);
     revolverController.setI(0.000000004);
     revolverController.setD(0.0);
@@ -200,17 +202,18 @@ public class Revolver extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
     SmartDashboard.putNumber("Revolver Position", revolverEncoder.getPosition());
     SmartDashboard.putBoolean("Fuel Cell Sensor", checkForFuel());
     SmartDashboard.putNumber("Number of Fuel Cell", sumFuelCells());
     SmartDashboard.putBoolean("Revoler Position Sensor", revolverPositionSensor.get());
-    SmartDashboard.putNumber("Counts per Revolution", revolverEncoder.getCountsPerRevolution());
-    SmartDashboard.putNumber("Position Conversion Factor", revolverEncoder.getPositionConversionFactor());
+
     SmartDashboard.putNumber("fuel cell slot", currentPosition());
     SmartDashboard.putNumber("voltage for fuel cell sensor", fuelCellSensor.getVoltage());
     SmartDashboard.putNumber("Revolver Target Position", targetPosition);
     SmartDashboard.putNumber("Next Empty Postion", nextEmptyPosition());
     SmartDashboard.putNumber("Revolver Motor Bus Voltage", revolverMotor.getBusVoltage());
     SmartDashboard.putNumber("Revolver Current", revolverMotor.getOutputCurrent());
+  
   }
 }
